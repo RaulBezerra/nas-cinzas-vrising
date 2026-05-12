@@ -1,9 +1,7 @@
 /* ============================
    Nas Cinzas — V Rising
-   characters.js v1
-   Renderiza a biblioteca de personagens.
-   Cada personagem contém referências por id
-   para armas e escolas, que são resolvidas aqui.
+   characters.js v2
+   Renderiza biblioteca de personagens com <img> placeholders.
    ============================ */
 
 async function loadAll() {
@@ -15,10 +13,15 @@ async function loadAll() {
 	return { weapons, schools, characters };
 }
 
-function renderRow(name, tag = "") {
+function iconImg(path) {
+	if (!path) return "";
+	return `<img src="${path}" alt="" onerror="this.remove()" onload="this.parentElement.classList.add('img-loaded')">`;
+}
+
+function renderRow(name, tag = "", iconPath = null) {
 	return `
 		<div class="character-row">
-			<div class="character-row-icon"></div>
+			<div class="character-row-icon">${iconImg(iconPath)}</div>
 			<div class="character-row-name">${name}</div>
 			${tag ? `<div class="character-row-tag">${tag}</div>` : ""}
 		</div>
@@ -37,27 +40,27 @@ function renderCharacter(character, weapons, schools) {
 	return `
 		<article class="library-card character">
 			<header class="library-card-header">
-				<div class="library-card-icon"></div>
+				<div class="library-card-icon">${iconImg(character.icon)}</div>
 				<h3>${character.name}</h3>
 				<code class="library-card-id">${character.id}</code>
 			</header>
 			<div class="character-section">
 				<h4>Arma equipada</h4>
-				${weapon ? renderRow(weapon.name, weapon.id) : renderRow("—")}
+				${weapon ? renderRow(weapon.name, weapon.id, weapon.icon) : renderRow("—")}
 			</div>
 			${inventory.length ? `
 				<div class="character-section">
 					<h4>Inventário</h4>
-					${inventory.map((w) => renderRow(w.name, w.id)).join("")}
+					${inventory.map((w) => renderRow(w.name, w.id, w.icon)).join("")}
 				</div>
 			` : ""}
 			<div class="character-section">
 				<h4>Escola Primária</h4>
-				${primary ? renderRow(primary.name, primary.id) : renderRow("—")}
+				${primary ? renderRow(primary.name, primary.id, primary.icon) : renderRow("—")}
 			</div>
 			<div class="character-section">
 				<h4>Escola Secundária</h4>
-				${secondary ? renderRow(secondary.name, secondary.id) : renderRow("—")}
+				${secondary ? renderRow(secondary.name, secondary.id, secondary.icon) : renderRow("—")}
 			</div>
 			<div class="character-section">
 				<h4>Habilidades Vampíricas</h4>

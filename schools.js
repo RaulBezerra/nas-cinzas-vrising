@@ -1,7 +1,8 @@
 /* ============================
    Nas Cinzas — V Rising
-   schools.js v1
-   Renderiza a biblioteca de escolas de magia a partir de data/schools.json
+   schools.js v3
+   Renderiza biblioteca de escolas. Aplica school-{id} na cor de cada
+   ability-card e usa <img> com fallback nos ícones.
    ============================ */
 
 async function loadSchools() {
@@ -9,29 +10,33 @@ async function loadSchools() {
 	return response.json();
 }
 
-function renderAbility(ability) {
+function iconImg(path) {
+	return `<img src="${path}" alt="" onerror="this.remove()" onload="this.parentElement.classList.add('img-loaded')">`;
+}
+
+function renderAbility(ability, schoolId) {
 	return `
-		<div class="ability">
-			<div class="ability-icon-placeholder"></div>
-			<div class="ability-info">
-				<div class="ability-name">${ability.name}</div>
-				<div class="ability-slot">${ability.slot}</div>
-				<div class="ability-effects">${renderEffects(ability.effects)}</div>
+		<article class="ability-card school-${schoolId}">
+			<div class="card-top">
+				<div class="card-img-placeholder">${iconImg(ability.icon)}</div>
+				<div class="card-name">${ability.name}</div>
 			</div>
-		</div>
+			<div class="card-effects">${renderEffects(ability.effects)}</div>
+			<div class="ability-slot-tag">${ability.slot}</div>
+		</article>
 	`;
 }
 
 function renderSchool(school) {
 	return `
-		<article class="library-card school">
+		<article class="library-card">
 			<header class="library-card-header">
-				<div class="library-card-icon"></div>
+				<div class="library-card-icon">${iconImg(school.icon)}</div>
 				<h3>${school.name}</h3>
 				<code class="library-card-id">${school.id}</code>
 			</header>
-			<div class="abilities-list">
-				${school.abilities.map(renderAbility).join("")}
+			<div class="abilities-grid" style="--n: ${school.abilities.length}">
+				${school.abilities.map((a) => renderAbility(a, school.id)).join("")}
 			</div>
 		</article>
 	`;

@@ -136,12 +136,16 @@ Array de escolas de magia. Cada escola tem **4 habilidades**: véu + 2 magias + 
 
 ### Arquivos versionados (Notion DB de Códigos)
 
-- `.gitignore` — exclusões padrão Windows/VS Code
-- `README.md` — descrição mínima do projeto
-- `index.html` v3 — header + main com card-grid à esquerda e board SVG à direita
-- `style.css` v6 — tema vampírico, layout em 2 colunas, cartas 200×150 (4:3), board hex, ícones SVG dimensionados
-- `app.js` v6 — biblioteca de ícones SVG (seta/espada/alvo/cruz/escudo), 12 cartas hardcoded, regra de seleção linha+coluna, render do grid com row-labels
-- `board.js` v1 — render do tabuleiro hexagonal SVG (7×5 hexes)
+- `.gitignore`, `README.md`, `CONTEXT.md`
+- `index.html` v4 — header + nav (Jogo/Armas/Escolas/Personagens) + grid de cartas + board SVG
+- `style.css` v6 — tema vampírico, 2 colunas, cartas 4:3, board hex
+- `app.js` v8 — carrega `data/*.json`, monta grid a partir do personagem ativo, ultimate herda a cor da escola primária
+- `board.js` v1 — tabuleiro hexagonal SVG (7×5)
+- `effects.js` v1 — `ICONS` + `renderEffect/Effects` compartilhados entre páginas
+- `weapons.html`/`weapons.js` v1 — biblioteca de armas
+- `schools.html`/`schools.js` v1 — biblioteca de escolas de magia
+- `characters.html`/`characters.js` v1 — biblioteca de personagens (resolve refs por id)
+- `data/weapons.json`, `data/schools.json`, `data/characters.json`
 
 ### Iconografia atual (em `app.js` `ICONS`)
 
@@ -179,7 +183,7 @@ Array de escolas de magia. Cada escola tem **4 habilidades**: véu + 2 magias + 
 
 - **Fase 1 — Cartas** ✅ grid 4×3, regra de seleção, layout das cartas com ícones
 - **Fase 2 — Tabuleiro** 🟡 grid hexagonal renderizado; falta peão, movimentação, interação carta↔tabuleiro
-- **Fase 3 — Armas/Escolas** 🟢 começando agora: JSONs de armas/escolas/personagens + páginas de biblioteca
+- **Fase 3 — Armas/Escolas** 🟡 JSONs + páginas de biblioteca prontas; falta integrar com ícones .png e permitir trocar personagem ativo
 - **Fase 4 — Editor de cartas** ⚪ futuro: editor in-app de habilidades
 
 ## 9. Histórico de commits
@@ -191,6 +195,7 @@ Array de escolas de magia. Cada escola tem **4 habilidades**: véu + 2 magias + 
 5. `style:` two-column layout with hand on left and board on right
 6. `feat:` redesign card layout with image placeholder, name and effects
 7. `feat:` replace effect text with SVG icons (arrow/sword/target/cross/shield)
+8. `feat:` add library pages for weapons, schools and characters (inclui refactor de `app.js` para carregar de `data/*.json`, `effects.js` compartilhado e nav no header)
 
 ## 10. Como manter este documento
 

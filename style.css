@@ -1,16 +1,22 @@
 /* ============================
    Nas Cinzas — V Rising
-   style.css v6
+   style.css v9
+   Tema prata pálido e neutro. Inclui nav, páginas de biblioteca,
+   cores das 6 escolas de magia e suporte a <img> nos placeholders.
    ============================ */
 
 :root {
-	--bg-base: #0e0a0a;
-	--bg-panel: #1a1010;
-	--ink: #e8d9c9;
-	--ink-dim: #8a7065;
-	--blood: #8a0d1e;
-	--blood-bright: #c41e3a;
-	--gold: #c9a25a;
+	--bg-base: #0d0e10;
+	--bg-panel: #181a1e;
+	--bg-panel-2: #20232a;
+	--ink: #d8dde3;
+	--ink-dim: #7a8088;
+	--border: #3a3f47;
+	--border-strong: #5a626e;
+	--accent: #b8c1ca;
+	--accent-bright: #e8edf2;
+	--highlight: #c9c5a8;
+	--heal: #c44a5a;
 
 	--card-w: 200px;
 	--card-h: 150px;
@@ -27,7 +33,7 @@
 body {
 	font-family: "Cormorant Garamond", "Georgia", serif;
 	background:
-		radial-gradient(circle at 50% 0%, #2a1414 0%, var(--bg-base) 60%);
+		radial-gradient(circle at 50% 0%, #1e2228 0%, var(--bg-base) 60%);
 	color: var(--ink);
 	min-height: 100vh;
 	padding: 32px 24px;
@@ -41,14 +47,45 @@ header {
 header h1 {
 	font-size: 2.4rem;
 	letter-spacing: 0.05em;
-	color: var(--blood-bright);
-	text-shadow: 0 0 12px rgba(196, 30, 58, 0.4);
+	color: var(--accent-bright);
+	text-shadow: 0 0 12px rgba(184, 193, 202, 0.25);
 }
 
 header .subtitle {
 	color: var(--ink-dim);
 	font-style: italic;
 	margin-top: 4px;
+}
+
+/* Nav compartilhada */
+.main-nav {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 16px;
+	padding-top: 12px;
+	border-top: 1px solid var(--border);
+}
+
+.main-nav a {
+	color: var(--ink-dim);
+	text-decoration: none;
+	padding: 0.4rem 1rem;
+	border-radius: 4px;
+	font-size: 0.85rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	transition: color 0.15s ease, background 0.15s ease;
+}
+
+.main-nav a:hover {
+	background: var(--bg-panel);
+	color: var(--ink);
+}
+
+.main-nav a.active {
+	color: var(--accent-bright);
+	border-bottom: 2px solid var(--accent-bright);
 }
 
 main {
@@ -60,14 +97,8 @@ main {
 	flex-wrap: wrap;
 }
 
-.card-grid-wrapper {
-	flex: 0 0 auto;
-}
-
-.board-wrapper {
-	flex: 1 1 360px;
-	min-width: 0;
-}
+.card-grid-wrapper { flex: 0 0 auto; }
+.board-wrapper { flex: 1 1 360px; min-width: 0; }
 
 .status-bar {
 	display: flex;
@@ -81,7 +112,7 @@ main {
 
 .status-bar h2,
 .section-title {
-	color: var(--gold);
+	color: var(--accent);
 	font-weight: 400;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
@@ -110,7 +141,7 @@ main {
 }
 
 .selection-counter {
-	color: var(--gold);
+	color: var(--highlight);
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 }
@@ -129,11 +160,11 @@ main {
 }
 
 .reset-btn:hover {
-	border-color: var(--blood-bright);
-	color: var(--blood-bright);
+	border-color: var(--accent-bright);
+	color: var(--accent-bright);
 }
 
-/* Grade: 1 coluna de rótulo + 3 colunas de cartas */
+/* Grade do jogo */
 .card-grid {
 	display: grid;
 	grid-template-columns: var(--row-label-w) repeat(3, var(--card-w));
@@ -141,7 +172,6 @@ main {
 	gap: var(--gap);
 }
 
-/* Rótulo de linha (origem da linha) */
 .row-label {
 	display: flex;
 	flex-direction: column;
@@ -162,7 +192,7 @@ main {
 
 .row-name {
 	font-size: 0.7rem;
-	color: var(--gold);
+	color: var(--accent);
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
 	font-weight: 600;
@@ -175,27 +205,37 @@ main {
 	font-style: italic;
 }
 
-/* Carta */
-.card {
-	background: linear-gradient(180deg, #2a1414 0%, var(--bg-panel) 100%);
-	border: 1px solid var(--blood);
+/* Carta base — usada no jogo e nas bibliotecas */
+.card,
+.ability-card {
+	background: linear-gradient(180deg, var(--bg-panel-2) 0%, var(--bg-panel) 100%);
+	border: 1px solid var(--border);
 	border-radius: 6px;
 	padding: 8px 12px;
 	display: grid;
-	grid-template-rows: auto 1fr;
 	gap: 6px;
 	box-shadow:
-		inset 0 0 12px rgba(196, 30, 58, 0.15),
+		inset 0 0 12px rgba(255, 255, 255, 0.04),
 		0 2px 8px rgba(0, 0, 0, 0.5);
-	cursor: pointer;
 	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card {
+	grid-template-rows: auto 1fr;
+	cursor: pointer;
 }
 
 .card:hover {
 	transform: translateY(-4px);
 	box-shadow:
-		inset 0 0 18px rgba(196, 30, 58, 0.3),
+		inset 0 0 18px rgba(255, 255, 255, 0.08),
 		0 6px 14px rgba(0, 0, 0, 0.7);
+}
+
+.ability-card {
+	width: var(--card-w);
+	height: var(--card-h);
+	grid-template-rows: auto 1fr auto;
 }
 
 .card-top {
@@ -211,6 +251,24 @@ main {
 	background: rgba(0, 0, 0, 0.35);
 	border: 1px dashed var(--ink-dim);
 	flex: 0 0 28px;
+	overflow: hidden;
+}
+
+/* Quando uma imagem carrega, esconde o placeholder tracejado */
+.card-img-placeholder.img-loaded,
+.library-card-icon.img-loaded,
+.character-row-icon.img-loaded {
+	border: none;
+	background: transparent;
+}
+
+.card-img-placeholder img,
+.library-card-icon img,
+.character-row-icon img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	display: block;
 }
 
 .card-name {
@@ -221,7 +279,7 @@ main {
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	font-weight: 500;
-	margin-right: 28px; /* espelha o placeholder pra centralizar o nome */
+	margin-right: 28px;
 }
 
 .card-effects {
@@ -257,14 +315,12 @@ main {
 }
 
 .effect-value {
-	color: var(--gold);
+	color: var(--highlight);
 	font-size: 1.5rem;
 	line-height: 1;
 }
 
-.effect-heal .effect-icon {
-	color: var(--blood-bright);
-}
+.effect-heal .effect-icon { color: var(--heal); }
 
 .effect-text {
 	font-size: 0.95rem;
@@ -281,26 +337,32 @@ main {
 	font-weight: 400;
 }
 
-/* variantes visuais por tipo de carta */
-.card.movement { border-color: #5a7a8a; }
-.card.utility { border-color: var(--ink-dim); }
-.card.vampire { border-color: var(--blood-bright); }
-.card.weapon { border-color: #8a6a3a; }
-.card.magic-primary { border-color: #6a3a8a; }
-.card.magic-secondary { border-color: #3a6a8a; }
+/* Variantes de tipo (bordas) — valem para .card e .ability-card */
+.card.vampire-row,    .ability-card.vampire-row    { border-color: var(--accent-bright); }
+.card.weapon,         .ability-card.weapon         { border-color: #8a7a5a; }
+.card.magic-primary,  .ability-card.magic-primary  { border-color: #6a3a8a; }
+.card.magic-secondary,.ability-card.magic-secondary{ border-color: #3a6a8a; }
 
-/* estados de seleção */
+/* Cores das 6 escolas de magia */
+.card.school-blood,   .ability-card.school-blood   { border-color: #a83838; }
+.card.school-frost,   .ability-card.school-frost   { border-color: #4878a8; }
+.card.school-unholy,  .ability-card.school-unholy  { border-color: #3a7a4a; }
+.card.school-illusion, .ability-card.school-illusion { border-color: #48a8a8; }
+.card.school-storm,   .ability-card.school-storm   { border-color: #c8a838; }
+.card.school-chaos,   .ability-card.school-chaos   { border-color: #8a48a8; }
+
+/* Estados de seleção (somente .card) */
 .card.selected {
-	border-color: var(--gold);
+	border-color: var(--highlight);
 	box-shadow:
-		inset 0 0 18px rgba(201, 162, 90, 0.35),
-		0 0 16px rgba(201, 162, 90, 0.5);
+		inset 0 0 18px rgba(201, 197, 168, 0.35),
+		0 0 16px rgba(201, 197, 168, 0.5);
 }
 
 .card.selected:hover {
 	box-shadow:
-		inset 0 0 18px rgba(201, 162, 90, 0.45),
-		0 6px 18px rgba(201, 162, 90, 0.6);
+		inset 0 0 18px rgba(201, 197, 168, 0.45),
+		0 6px 18px rgba(201, 197, 168, 0.6);
 }
 
 .card.blocked {
@@ -312,16 +374,12 @@ main {
 .card.blocked:hover {
 	transform: none;
 	box-shadow:
-		inset 0 0 12px rgba(196, 30, 58, 0.15),
+		inset 0 0 12px rgba(255, 255, 255, 0.04),
 		0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* tabuleiro hexagonal */
-.board {
-	display: block;
-	width: 100%;
-	height: auto;
-}
+/* Tabuleiro hexagonal */
+.board { display: block; width: 100%; height: auto; }
 
 .hex {
 	fill: var(--bg-panel);
@@ -331,8 +389,8 @@ main {
 }
 
 .hex:hover {
-	fill: rgba(196, 30, 58, 0.15);
-	stroke: var(--blood-bright);
+	fill: rgba(184, 193, 202, 0.12);
+	stroke: var(--accent-bright);
 	cursor: pointer;
 }
 
@@ -343,4 +401,150 @@ main {
 	text-anchor: middle;
 	pointer-events: none;
 	user-select: none;
+}
+
+/* ============================
+   Páginas de biblioteca
+   ============================ */
+
+.library {
+	flex: 1 1 100%;
+	min-width: 0;
+}
+
+.library-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	align-items: flex-start;
+}
+
+.library-list.compact {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+	align-items: stretch;
+	width: 100%;
+}
+
+.library-card {
+	background: var(--bg-panel);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 1.25rem;
+	width: fit-content;
+}
+
+.library-list.compact .library-card { width: auto; }
+
+.library-card-header {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+	margin-bottom: 1rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid var(--border);
+}
+
+.library-card-icon {
+	width: 48px;
+	height: 48px;
+	border: 1px dashed var(--border-strong);
+	border-radius: 4px;
+	flex-shrink: 0;
+}
+
+.library-card-header h3 {
+	margin: 0;
+	flex: 1;
+	font-size: 1.25rem;
+	color: var(--ink);
+	letter-spacing: 0.04em;
+	font-weight: 500;
+}
+
+.library-card-id {
+	color: var(--ink-dim);
+	font-size: 0.75rem;
+	font-family: "Consolas", "Courier New", monospace;
+}
+
+.weapon-damage {
+	color: var(--highlight);
+	font-family: "Consolas", "Courier New", monospace;
+	font-size: 0.95rem;
+	background: rgba(255, 255, 255, 0.04);
+	padding: 4px 10px;
+	border-radius: 4px;
+	border: 1px solid var(--border);
+	letter-spacing: 0.04em;
+}
+
+.abilities-grid {
+	display: grid;
+	grid-template-columns: repeat(var(--n, 3), var(--card-w));
+	grid-auto-rows: var(--card-h);
+	gap: var(--gap);
+}
+
+.ability-slot-tag {
+	text-align: center;
+	font-size: 0.6rem;
+	color: var(--ink-dim);
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	font-style: italic;
+}
+
+/* Seções do card de personagem */
+.character-section {
+	margin-top: 0.75rem;
+	padding-top: 0.75rem;
+	border-top: 1px dashed var(--border);
+}
+
+.character-section:first-of-type {
+	border-top: none;
+	padding-top: 0;
+	margin-top: 0;
+}
+
+.character-section h4 {
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	color: var(--ink-dim);
+	margin: 0 0 0.4rem 0;
+	letter-spacing: 0.08em;
+	font-weight: 500;
+}
+
+.character-row {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	padding: 0.45rem 0.6rem;
+	background: var(--bg-panel-2);
+	border-radius: 4px;
+	margin-bottom: 0.3rem;
+}
+
+.character-row:last-child { margin-bottom: 0; }
+
+.character-row-icon {
+	width: 28px;
+	height: 28px;
+	border: 1px dashed var(--border-strong);
+	border-radius: 3px;
+	flex-shrink: 0;
+}
+
+.character-row-name {
+	flex: 1;
+	font-size: 0.95rem;
+	color: var(--ink);
+}
+
+.character-row-tag {
+	color: var(--ink-dim);
+	font-size: 0.75rem;
+	font-family: "Consolas", "Courier New", monospace;
 }

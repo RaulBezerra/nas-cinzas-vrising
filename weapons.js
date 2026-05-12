@@ -1,7 +1,7 @@
 /* ============================
    Nas Cinzas — V Rising
-   weapons.js v1
-   Renderiza a biblioteca de armas a partir de data/weapons.json
+   weapons.js v3
+   Renderiza biblioteca de armas com <img> placeholders e --n na grade.
    ============================ */
 
 async function loadWeapons() {
@@ -9,28 +9,36 @@ async function loadWeapons() {
 	return response.json();
 }
 
+function iconImg(path) {
+	return `<img src="${path}" alt="" onerror="this.remove()" onload="this.parentElement.classList.add('img-loaded')">`;
+}
+
 function renderAbility(ability) {
 	return `
-		<div class="ability">
-			<div class="ability-icon-placeholder"></div>
-			<div class="ability-info">
-				<div class="ability-name">${ability.name}</div>
-				<div class="ability-slot">${ability.slot}</div>
-				<div class="ability-effects">${renderEffects(ability.effects)}</div>
+		<article class="ability-card weapon">
+			<div class="card-top">
+				<div class="card-img-placeholder">${iconImg(ability.icon)}</div>
+				<div class="card-name">${ability.name}</div>
 			</div>
-		</div>
+			<div class="card-effects">${renderEffects(ability.effects)}</div>
+			<div class="ability-slot-tag">${ability.slot}</div>
+		</article>
 	`;
 }
 
 function renderWeapon(weapon) {
+	const damage = weapon.baseDamage
+		? `<span class="weapon-damage">${weapon.baseDamage}</span>`
+		: "";
 	return `
-		<article class="library-card weapon">
+		<article class="library-card">
 			<header class="library-card-header">
-				<div class="library-card-icon"></div>
+				<div class="library-card-icon">${iconImg(weapon.icon)}</div>
 				<h3>${weapon.name}</h3>
+				${damage}
 				<code class="library-card-id">${weapon.id}</code>
 			</header>
-			<div class="abilities-list">
+			<div class="abilities-grid" style="--n: ${weapon.abilities.length}">
 				${weapon.abilities.map(renderAbility).join("")}
 			</div>
 		</article>

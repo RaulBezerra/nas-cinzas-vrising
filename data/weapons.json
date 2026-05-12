@@ -3,6 +3,7 @@
 		"id": "sword",
 		"name": "Espada",
 		"icon": "assets/icons/weapons/sword.png",
+		"baseDamage": "6+1d6",
 		"abilities": [
 			{
 				"slot": "move-attack",
@@ -34,6 +35,7 @@
 		"id": "axe",
 		"name": "Machado",
 		"icon": "assets/icons/weapons/axe.png",
+		"baseDamage": "7+1d8",
 		"abilities": [
 			{
 				"slot": "move-attack",

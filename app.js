@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   app.js v8
+   app.js v9
    ============================ */
 
 const ICONS = {
@@ -58,7 +58,13 @@ function buildGrid(character, weapons, schools) {
 		["ultimate", "magic-1", "magic-2"],
 	];
 
-	const rowTypes = ["vampire-row", "weapon", "magic-primary", "magic-secondary"];
+	// Linhas 3 e 4 herdam a cor da escola correspondente (school-{id})
+	const rowTypes = [
+		"vampire-row",
+		"weapon",
+		`school-${primary.id}`,
+		`school-${secondary.id}`,
+	];
 
 	const cards = [];
 	for (let r = 0; r < 4; r++) {
@@ -78,7 +84,7 @@ function buildGrid(character, weapons, schools) {
 			}
 			const isUltimate = r === 3 && c === 0;
 			// Ultimate visualmente pertence à escola primária, mesmo estando na linha 4
-			const baseType = isUltimate ? "magic-primary" : rowTypes[r];
+			const baseType = isUltimate ? `school-${primary.id}` : rowTypes[r];
 			cards.push({
 				row: r + 1,
 				col: c + 1,

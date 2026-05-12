@@ -42,30 +42,170 @@
 			{
 				"slot": "veil",
 				"id": "frost-veil",
-				"name": "Véu de Gelo",
+				"name": "Véu Gelado",
 				"icon": "assets/icons/abilities/frost-veil.png",
 				"effects": [{ "kind": "text", "text": "Véu" }]
 			},
 			{
 				"slot": "magic-1",
-				"id": "frost-shard",
-				"name": "Lasca Glacial",
-				"icon": "assets/icons/abilities/frost-shard.png",
-				"effects": [{ "kind": "attack", "value": 1, "ranged": true }]
+				"id": "frost-spear",
+				"name": "Lança de Gelo",
+				"icon": "assets/icons/abilities/frost-spear.png",
+				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
 			},
 			{
 				"slot": "magic-2",
 				"id": "frost-barrier",
 				"name": "Barreira Glacial",
 				"icon": "assets/icons/abilities/frost-barrier.png",
-				"effects": [{ "kind": "defense", "value": 2 }]
+				"effects": [{ "kind": "defense", "value": 3 }]
 			},
 			{
 				"slot": "ultimate",
-				"id": "frost-arctic",
-				"name": "Tempestade Ártica",
-				"icon": "assets/icons/abilities/frost-arctic.png",
+				"id": "frost-storm",
+				"name": "Tempestade Glacial",
+				"icon": "assets/icons/abilities/frost-storm.png",
+				"effects": [{ "kind": "attack", "value": 4 }]
+			}
+		]
+	},
+	{
+		"id": "unholy",
+		"name": "Profano",
+		"icon": "assets/icons/schools/unholy.png",
+		"abilities": [
+			{
+				"slot": "veil",
+				"id": "unholy-veil",
+				"name": "Véu Profano",
+				"icon": "assets/icons/abilities/unholy-veil.png",
+				"effects": [{ "kind": "text", "text": "Véu" }]
+			},
+			{
+				"slot": "magic-1",
+				"id": "unholy-bolt",
+				"name": "Disparo Profano",
+				"icon": "assets/icons/abilities/unholy-bolt.png",
+				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+			},
+			{
+				"slot": "magic-2",
+				"id": "unholy-plague",
+				"name": "Toque da Praga",
+				"icon": "assets/icons/abilities/unholy-plague.png",
+				"effects": [{ "kind": "attack", "value": 2 }]
+			},
+			{
+				"slot": "ultimate",
+				"id": "unholy-pestilence",
+				"name": "Pestilência",
+				"icon": "assets/icons/abilities/unholy-pestilence.png",
 				"effects": [{ "kind": "attack", "value": 3 }]
+			}
+		]
+	},
+	{
+		"id": "illusion",
+		"name": "Ilusão",
+		"icon": "assets/icons/schools/illusion.png",
+		"abilities": [
+			{
+				"slot": "veil",
+				"id": "illusion-veil",
+				"name": "Véu de Ilusão",
+				"icon": "assets/icons/abilities/illusion-veil.png",
+				"effects": [{ "kind": "text", "text": "Véu" }]
+			},
+			{
+				"slot": "magic-1",
+				"id": "illusion-dagger",
+				"name": "Adaga Ilusória",
+				"icon": "assets/icons/abilities/illusion-dagger.png",
+				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+			},
+			{
+				"slot": "magic-2",
+				"id": "illusion-strike",
+				"name": "Golpe Ilusório",
+				"icon": "assets/icons/abilities/illusion-strike.png",
+				"effects": [{ "kind": "attack", "value": 3 }]
+			},
+			{
+				"slot": "ultimate",
+				"id": "illusion-hunt",
+				"name": "Caçada Ilusória",
+				"icon": "assets/icons/abilities/illusion-hunt.png",
+				"effects": [{ "kind": "attack", "value": 4 }]
+			}
+		]
+	},
+	{
+		"id": "storm",
+		"name": "Raio",
+		"icon": "assets/icons/schools/storm.png",
+		"abilities": [
+			{
+				"slot": "veil",
+				"id": "storm-veil",
+				"name": "Véu Tempestuoso",
+				"icon": "assets/icons/abilities/storm-veil.png",
+				"effects": [{ "kind": "text", "text": "Véu" }]
+			},
+			{
+				"slot": "magic-1",
+				"id": "storm-bolt",
+				"name": "Raio Imediato",
+				"icon": "assets/icons/abilities/storm-bolt.png",
+				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+			},
+			{
+				"slot": "magic-2",
+				"id": "storm-shock",
+				"name": "Toque Eletrizante",
+				"icon": "assets/icons/abilities/storm-shock.png",
+				"effects": [{ "kind": "attack", "value": 2 }]
+			},
+			{
+				"slot": "ultimate",
+				"id": "storm-vengeance",
+				"name": "Vingança do Trovão",
+				"icon": "assets/icons/abilities/storm-vengeance.png",
+				"effects": [{ "kind": "attack", "value": 4 }]
+			}
+		]
+	},
+	{
+		"id": "chaos",
+		"name": "Caos",
+		"icon": "assets/icons/schools/chaos.png",
+		"abilities": [
+			{
+				"slot": "veil",
+				"id": "chaos-veil",
+				"name": "Véu do Caos",
+				"icon": "assets/icons/abilities/chaos-veil.png",
+				"effects": [{ "kind": "text", "text": "Véu" }]
+			},
+			{
+				"slot": "magic-1",
+				"id": "chaos-fireball",
+				"name": "Bola de Fogo",
+				"icon": "assets/icons/abilities/chaos-fireball.png",
+				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+			},
+			{
+				"slot": "magic-2",
+				"id": "chaos-blast",
+				"name": "Explosão Caótica",
+				"icon": "assets/icons/abilities/chaos-blast.png",
+				"effects": [{ "kind": "attack", "value": 3 }]
+			},
+			{
+				"slot": "ultimate",
+				"id": "chaos-annihilation",
+				"name": "Aniquilação",
+				"icon": "assets/icons/abilities/chaos-annihilation.png",
+				"effects": [{ "kind": "attack", "value": 5 }]
 			}
 		]
 	}
