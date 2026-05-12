@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   style.css v1
+   style.css v2
    ============================ */
 
 :root {
@@ -55,15 +55,60 @@ main {
 	margin: 0 auto;
 }
 
-.card-grid-wrapper h2 {
+.status-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+	border-bottom: 1px solid var(--ink-dim);
+	padding-bottom: 8px;
+}
+
+.status-bar h2 {
 	color: var(--gold);
 	font-weight: 400;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	font-size: 0.9rem;
-	margin-bottom: 16px;
-	border-bottom: 1px solid var(--ink-dim);
-	padding-bottom: 8px;
+	margin: 0;
+}
+
+.selection-info {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.85rem;
+}
+
+.selection-label {
+	color: var(--ink-dim);
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	font-size: 0.75rem;
+}
+
+.selection-counter {
+	color: var(--gold);
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.reset-btn {
+	background: transparent;
+	border: 1px solid var(--ink-dim);
+	color: var(--ink);
+	padding: 4px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: 0.8rem;
+	letter-spacing: 0.05em;
+	transition: all 0.15s ease;
+}
+
+.reset-btn:hover {
+	border-color: var(--blood-bright);
+	color: var(--blood-bright);
 }
 
 .card-grid {
@@ -125,3 +170,30 @@ main {
 .card.weapon { border-color: #8a6a3a; }
 .card.magic-primary { border-color: #6a3a8a; }
 .card.magic-secondary { border-color: #3a6a8a; }
+
+/* estados de seleção */
+.card.selected {
+	border-color: var(--gold);
+	box-shadow:
+		inset 0 0 18px rgba(201, 162, 90, 0.35),
+		0 0 16px rgba(201, 162, 90, 0.5);
+}
+
+.card.selected:hover {
+	box-shadow:
+		inset 0 0 18px rgba(201, 162, 90, 0.45),
+		0 6px 18px rgba(201, 162, 90, 0.6);
+}
+
+.card.blocked {
+	opacity: 0.3;
+	cursor: not-allowed;
+	filter: grayscale(0.7);
+}
+
+.card.blocked:hover {
+	transform: none;
+	box-shadow:
+		inset 0 0 12px rgba(196, 30, 58, 0.15),
+		0 2px 8px rgba(0, 0, 0, 0.5);
+}

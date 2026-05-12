@@ -14,7 +14,14 @@
 
 	<main>
 		<section class="card-grid-wrapper">
-			<h2>Mão do jogador</h2>
+			<div class="status-bar">
+				<h2>Mão do jogador</h2>
+				<div class="selection-info">
+					<span class="selection-label">Selecionadas</span>
+					<span id="selection-counter" class="selection-counter">0 / 3</span>
+					<button id="reset-btn" class="reset-btn">Limpar</button>
+				</div>
+			</div>
 			<div id="card-grid" class="card-grid">
 				<!-- cartas renderizadas via JS -->
 			</div>
