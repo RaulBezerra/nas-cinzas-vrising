@@ -1,0 +1,72 @@
+[
+	{
+		"id": "blood",
+		"name": "Sangue",
+		"icon": "assets/icons/schools/blood.png",
+		"abilities": [
+			{
+				"slot": "veil",
+				"id": "blood-veil",
+				"name": "Véu de Sangue",
+				"icon": "assets/icons/abilities/blood-veil.png",
+				"effects": [{ "kind": "text", "text": "Véu" }]
+			},
+			{
+				"slot": "magic-1",
+				"id": "blood-spear",
+				"name": "Lança Sanguínea",
+				"icon": "assets/icons/abilities/blood-spear.png",
+				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+			},
+			{
+				"slot": "magic-2",
+				"id": "blood-thirst",
+				"name": "Sede Voraz",
+				"icon": "assets/icons/abilities/blood-thirst.png",
+				"effects": [{ "kind": "heal", "value": 2 }]
+			},
+			{
+				"slot": "ultimate",
+				"id": "blood-tempest",
+				"name": "Tempestade de Sangue",
+				"icon": "assets/icons/abilities/blood-tempest.png",
+				"effects": [{ "kind": "attack", "value": 4 }]
+			}
+		]
+	},
+	{
+		"id": "frost",
+		"name": "Gelo",
+		"icon": "assets/icons/schools/frost.png",
+		"abilities": [
+			{
+				"slot": "veil",
+				"id": "frost-veil",
+				"name": "Véu de Gelo",
+				"icon": "assets/icons/abilities/frost-veil.png",
+				"effects": [{ "kind": "text", "text": "Véu" }]
+			},
+			{
+				"slot": "magic-1",
+				"id": "frost-shard",
+				"name": "Lasca Glacial",
+				"icon": "assets/icons/abilities/frost-shard.png",
+				"effects": [{ "kind": "attack", "value": 1, "ranged": true }]
+			},
+			{
+				"slot": "magic-2",
+				"id": "frost-barrier",
+				"name": "Barreira Glacial",
+				"icon": "assets/icons/abilities/frost-barrier.png",
+				"effects": [{ "kind": "defense", "value": 2 }]
+			},
+			{
+				"slot": "ultimate",
+				"id": "frost-arctic",
+				"name": "Tempestade Ártica",
+				"icon": "assets/icons/abilities/frost-arctic.png",
+				"effects": [{ "kind": "attack", "value": 3 }]
+			}
+		]
+	}
+]

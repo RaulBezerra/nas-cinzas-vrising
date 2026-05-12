@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   app.js v6
+   app.js v8
    ============================ */
 
 const ICONS = {
@@ -11,40 +11,87 @@ const ICONS = {
 	shield: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v7c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/></svg>',
 };
 
-const rowLabels = [
-	{ name: "Vampiro", note: "" },
-	{ name: "Arma", note: "Espada" },
-	{ name: "Escola Primária", note: "Sangue" },
-	{ name: "Escola Secundária", note: "Gelo" },
-];
-
-const cards = [
-	// Linha 1 — Vampiro (fixa)
-	{ row: 1, col: 1, name: "Passos das Sombras", type: "movement", effects: [{ kind: "move", value: 3 }] },
-	{ row: 1, col: 2, name: "Trocar Arma", type: "utility", effects: [{ kind: "text", text: "Trocar arma" }] },
-	{ row: 1, col: 3, name: "Poder Sanguíneo", type: "vampire", effects: [{ kind: "text", text: "Habilidade vampírica" }] },
-
-	// Linha 2 — Arma (Espada, placeholder; ataques corpo-a-corpo)
-	{ row: 2, col: 1, name: "Investida", type: "weapon", effects: [{ kind: "move", value: 1 }, { kind: "attack", value: 2 }] },
-	{ row: 2, col: 2, name: "Cortar", type: "weapon", effects: [{ kind: "attack", value: 2 }] },
-	{ row: 2, col: 3, name: "Lâmina Brutal", type: "weapon", effects: [{ kind: "attack", value: 3 }] },
-
-	// Linha 3 — Escola Primária (Sangue, placeholder)
-	{ row: 3, col: 1, name: "Véu de Sangue", type: "magic-primary", effects: [{ kind: "text", text: "Véu" }] },
-	{ row: 3, col: 2, name: "Lança Sanguínea", type: "magic-primary", effects: [{ kind: "attack", value: 2, ranged: true }] },
-	{ row: 3, col: 3, name: "Sede Voraz", type: "magic-primary", effects: [{ kind: "heal", value: 2 }] },
-
-	// Linha 4 — Escola Secundária (Gelo, placeholder)
-	{ row: 4, col: 1, name: "—", type: "magic-secondary", effects: [] },
-	{ row: 4, col: 2, name: "Lasca Glacial", type: "magic-secondary", effects: [{ kind: "attack", value: 1, ranged: true }] },
-	{ row: 4, col: 3, name: "Barreira Glacial", type: "magic-secondary", effects: [{ kind: "defense", value: 2 }] },
+// Linha 1 do grid — fixa pra todo personagem
+const VAMPIRE_ROW = [
+	{ slot: "move",          name: "Passos das Sombras",   effects: [{ kind: "move", value: 3 }] },
+	{ slot: "swap-weapon",   name: "Trocar Arma",          effects: [{ kind: "text", text: "Trocar arma" }] },
+	{ slot: "vampire-power", name: "Habilidade Vampírica", effects: [{ kind: "text", text: "Escolher" }] },
 ];
 
 const MAX_SELECTION = 3;
 
 const state = {
 	selected: new Set(),
+	rowLabels: [],
+	cards: [],
 };
+
+// Carregamento ============================
+
+async function loadData() {
+	const [weapons, schools, characters] = await Promise.all([
+		fetch("data/weapons.json").then((r) => r.json()),
+		fetch("data/schools.json").then((r) => r.json()),
+		fetch("data/characters.json").then((r) => r.json()),
+	]);
+	return { weapons, schools, characters };
+}
+
+function buildGrid(character, weapons, schools) {
+	const weapon = weapons.find((w) => w.id === character.equippedWeapon);
+	const primary = schools.find((s) => s.id === character.primarySchool);
+	const secondary = schools.find((s) => s.id === character.secondarySchool);
+
+	const findAbility = (list, slot) => list.find((a) => a.slot === slot);
+
+	const rowLabels = [
+		{ name: "Vampiro", note: "" },
+		{ name: "Arma", note: weapon.name, icon: weapon.icon },
+		{ name: "Escola Primária", note: primary.name, icon: primary.icon },
+		{ name: "Escola Secundária", note: secondary.name, icon: secondary.icon },
+	];
+
+	const rowSlots = [
+		["move", "swap-weapon", "vampire-power"],
+		["move-attack", "basic-attack", "special-attack"],
+		["veil", "magic-1", "magic-2"],
+		["ultimate", "magic-1", "magic-2"],
+	];
+
+	const rowTypes = ["vampire-row", "weapon", "magic-primary", "magic-secondary"];
+
+	const cards = [];
+	for (let r = 0; r < 4; r++) {
+		for (let c = 0; c < 3; c++) {
+			const slot = rowSlots[r][c];
+			let ab;
+			if (r === 0) {
+				ab = VAMPIRE_ROW[c];
+			} else if (r === 1) {
+				ab = findAbility(weapon.abilities, slot);
+			} else if (r === 2) {
+				ab = findAbility(primary.abilities, slot);
+			} else {
+				ab = c === 0
+					? findAbility(primary.abilities, "ultimate")
+					: findAbility(secondary.abilities, slot);
+			}
+			const isUltimate = r === 3 && c === 0;
+			// Ultimate visualmente pertence à escola primária, mesmo estando na linha 4
+			const baseType = isUltimate ? "magic-primary" : rowTypes[r];
+			cards.push({
+				row: r + 1,
+				col: c + 1,
+				name: ab ? ab.name : "—",
+				type: baseType + (isUltimate ? " ultimate" : ""),
+				icon: ab ? ab.icon : null,
+				effects: ab ? ab.effects : [],
+				persistent: isUltimate,
+			});
+		}
+	}
+	return { rowLabels, cards };
+}
 
 // Helpers ============================
 
@@ -129,7 +176,7 @@ function renderCard(card) {
 	const selected = isSelected(card);
 	const blocked = !selected && isBlocked(card);
 
-	const classes = ["card", card.type];
+	const classes = ["card", ...card.type.split(" ")];
 	if (selected) classes.push("selected");
 	if (blocked) classes.push("blocked");
 	el.className = classes.join(" ");
@@ -151,10 +198,10 @@ function renderCard(card) {
 function renderGrid() {
 	const grid = document.getElementById("card-grid");
 	grid.innerHTML = "";
-	for (let r = 1; r <= 4; r++) {
-		grid.appendChild(renderRowLabel(rowLabels[r - 1]));
-		const rowCards = cards
-			.filter((c) => c.row === r)
+	for (let r = 0; r < 4; r++) {
+		grid.appendChild(renderRowLabel(state.rowLabels[r]));
+		const rowCards = state.cards
+			.filter((c) => c.row === r + 1)
 			.sort((a, b) => a.col - b.col);
 		rowCards.forEach((c) => grid.appendChild(renderCard(c)));
 	}
@@ -170,5 +217,13 @@ function updateStatus() {
 
 // Boot ============================
 
-document.getElementById("reset-btn").addEventListener("click", resetSelection);
-renderGrid();
+(async function init() {
+	const { weapons, schools, characters } = await loadData();
+	const character = characters[0]; // por enquanto, primeiro personagem da lista
+	const { rowLabels, cards } = buildGrid(character, weapons, schools);
+	state.rowLabels = rowLabels;
+	state.cards = cards;
+
+	document.getElementById("reset-btn").addEventListener("click", resetSelection);
+	renderGrid();
+})();

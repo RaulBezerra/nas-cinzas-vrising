@@ -1,0 +1,12 @@
+[
+	{
+		"id": "default",
+		"name": "Vampiro Padrão",
+		"icon": "assets/icons/characters/default.png",
+		"equippedWeapon": "sword",
+		"inventory": ["sword", "axe"],
+		"primarySchool": "blood",
+		"secondarySchool": "frost",
+		"vampireAbilities": ["transform", "blood-regen"]
+	}
+]

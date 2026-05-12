@@ -1,0 +1,64 @@
+[
+	{
+		"id": "sword",
+		"name": "Espada",
+		"icon": "assets/icons/weapons/sword.png",
+		"abilities": [
+			{
+				"slot": "move-attack",
+				"id": "sword-charge",
+				"name": "Investida",
+				"icon": "assets/icons/abilities/sword-charge.png",
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{ "kind": "attack", "value": 2 }
+				]
+			},
+			{
+				"slot": "basic-attack",
+				"id": "sword-slash",
+				"name": "Cortar",
+				"icon": "assets/icons/abilities/sword-slash.png",
+				"effects": [{ "kind": "attack", "value": 2 }]
+			},
+			{
+				"slot": "special-attack",
+				"id": "sword-brutal",
+				"name": "Lâmina Brutal",
+				"icon": "assets/icons/abilities/sword-brutal.png",
+				"effects": [{ "kind": "attack", "value": 3 }]
+			}
+		]
+	},
+	{
+		"id": "axe",
+		"name": "Machado",
+		"icon": "assets/icons/weapons/axe.png",
+		"abilities": [
+			{
+				"slot": "move-attack",
+				"id": "axe-leap",
+				"name": "Salto Brutal",
+				"icon": "assets/icons/abilities/axe-leap.png",
+				"effects": [
+					{ "kind": "move", "value": 2 },
+					{ "kind": "attack", "value": 2 }
+				]
+			},
+			{
+				"slot": "basic-attack",
+				"id": "axe-cleave",
+				"name": "Fender",
+				"icon": "assets/icons/abilities/axe-cleave.png",
+				"effects": [{ "kind": "attack", "value": 3 }]
+			},
+			{
+				"slot": "special-attack",
+				"id": "axe-whirlwind",
+				"name": "Redemoinho",
+				"icon": "assets/icons/abilities/axe-whirlwind.png",
+				"effects": [{ "kind": "attack", "value": 2 }]
+			}
+		]
+	}
+]

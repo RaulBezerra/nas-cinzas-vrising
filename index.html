@@ -5,11 +5,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Nas Cinzas — V Rising</title>
 	<link rel="stylesheet" href="style.css">
+	<style>
+		.main-nav { display: flex; gap: 0.5rem; padding: 0.5rem 1.5rem; border-top: 1px solid #3a1a1a; }
+		.main-nav a { color: #888; text-decoration: none; padding: 0.4rem 0.9rem; border-radius: 4px; font-size: 0.9rem; letter-spacing: 0.05em; }
+		.main-nav a:hover { background: #1a0a0a; color: #ddd; }
+		.main-nav a.active { color: #ff4444; border-bottom: 2px solid #ff4444; }
+	</style>
 </head>
 <body>
 	<header>
 		<h1>Nas Cinzas — V Rising</h1>
 		<p class="subtitle">Protótipo de mecânica de combate</p>
+		<nav class="main-nav">
+			<a href="index.html" class="active">Jogo</a>
+			<a href="weapons.html">Armas</a>
+			<a href="schools.html">Escolas</a>
+			<a href="characters.html">Personagens</a>
+		</nav>
 	</header>
 
 	<main>

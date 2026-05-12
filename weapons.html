@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<title>Armas — Nas Cinzas V Rising</title>
+	<link rel="stylesheet" href="style.css">
+	<style>
+		.main-nav { display: flex; gap: 0.5rem; padding: 0.5rem 1.5rem; border-top: 1px solid #3a1a1a; }
+		.main-nav a { color: #888; text-decoration: none; padding: 0.4rem 0.9rem; border-radius: 4px; font-size: 0.9rem; letter-spacing: 0.05em; }
+		.main-nav a:hover { background: #1a0a0a; color: #ddd; }
+		.main-nav a.active { color: #ff4444; border-bottom: 2px solid #ff4444; }
+
+		.library { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+		.library-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
+		.library-card { background: #1a0a0a; border: 1px solid #3a1a1a; border-radius: 6px; padding: 1rem; }
+		.library-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid #3a1a1a; }
+		.library-card-icon { width: 48px; height: 48px; border: 1px dashed #4a2a2a; border-radius: 4px; flex-shrink: 0; }
+		.library-card-header h3 { margin: 0; flex: 1; font-size: 1.1rem; color: #eee; }
+		.library-card-id { color: #777; font-size: 0.75rem; font-family: monospace; }
+		.abilities-list { display: flex; flex-direction: column; gap: 0.5rem; }
+		.ability { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: #220e0e; border-radius: 4px; }
+		.ability-icon-placeholder { width: 40px; height: 40px; border: 1px dashed #4a2a2a; border-radius: 4px; flex-shrink: 0; }
+		.ability-info { flex: 1; min-width: 0; }
+		.ability-name { font-weight: 600; color: #eee; }
+		.ability-slot { color: #888; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
+		.ability-effects { display: flex; gap: 0.5rem; margin-top: 0.3rem; align-items: center; flex-wrap: wrap; }
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Nas Cinzas <span style="color:#ff4444">→</span> V Rising</h1>
+		<nav class="main-nav">
+			<a href="index.html">Jogo</a>
+			<a href="weapons.html" class="active">Armas</a>
+			<a href="schools.html">Escolas</a>
+			<a href="characters.html">Personagens</a>
+		</nav>
+	</header>
+	<main>
+		<section class="library">
+			<h2 class="section-title">Biblioteca de Armas</h2>
+			<div id="weapons-list" class="library-list"></div>
+		</section>
+	</main>
+	<script src="effects.js"></script>
+	<script src="weapons.js"></script>
+</body>
+</html>
