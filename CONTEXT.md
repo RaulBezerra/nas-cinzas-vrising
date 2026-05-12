@@ -1,208 +1,160 @@
-> Documento de contexto para retomar o desenvolvimento em uma nova sessão (com qualquer LLM). Atualizado sempre que um commit é registrado.
+> Documento de contexto para retomar o desenvolvimento em uma nova sessão. Atualizado sempre que um commit é registrado.
 > 
 
 ## 1. Visão geral
 
-**Nas Cinzas — V Rising** é uma adaptação de mesa-digital que pega a mecânica do livro-jogo *Nas Cinzas* (cartas em grid 4×3, turnos de 3 rodadas, sem coincidir linha/coluna) e a transpõe para o universo de V Rising (vampiros, armas e escolas de magia).
+**Nas Cinzas — V Rising** é uma adaptação de mesa-digital da mecânica do livro-jogo *Nas Cinzas* para o universo de V Rising. O protótipo usa cartas em grid 4×3, turnos de 3 rodadas e seleção sem repetir linha/coluna.
 
-Protótipo web simples (HTML + CSS + JS vanilla) rodando local via Live Server, sem framework, sem build step.
+Stack simples: HTML + CSS + JavaScript vanilla, rodando localmente via Live Server.
 
-## 2. Stack & ambiente
+## 2. Ambiente
 
-- **Linguagens:** HTML, CSS, JavaScript (vanilla, sem framework, sem bundler)
-- **Servidor local:** Live Server (extensão VS Code) em `http://127.0.0.1:5500`
+- **Repositório local:** `C:\Users\Windows\OneDrive\V Rising\nas-cinzas-vrising`
+- **Branch:** `main`
+- **Servidor local:** Live Server (`http://127.0.0.1:5500`)
 - **Editor:** VS Code
-- **OS:** Windows 10
-- **Versionamento:** Git (branch `main`), repositório local em `C:\Users\Windows\OneDrive\V Rising\nas-cinzas-vrising`
-- **Convenção de commits:** Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `style:`)
-- **Remoto:** ainda não configurado (apenas local)
+- **Commits:** Conventional Commits (`feat:`, `fix:`, `style:`, `docs:`, `refactor:`, `chore:`)
+- **Remoto:** ainda não configurado
 
-## 3. Estrutura de pastas
+## 3. Estrutura
 
 ```
 nas-cinzas-vrising/
-├── index.html          # jogo principal (grid de cartas + tabuleiro)
-├── weapons.html        # biblioteca de armas
-├── schools.html        # biblioteca de escolas de magia
-├── characters.html     # biblioteca de personagens
+├── index.html
+├── weapons.html
+├── schools.html
+├── characters.html
 ├── style.css
-├── app.js              # lógica do jogo (cartas, seleção, render)
-├── board.js            # render do tabuleiro hexagonal
+├── app.js
+├── board.js
+├── effects.js
+├── weapons.js
+├── schools.js
+├── characters.js
 ├── data/
 │   ├── weapons.json
 │   ├── schools.json
 │   └── characters.json
-├── assets/
-│   └── icons/
-│       ├── weapons/    # .png/.jpg dos ícones de armas
-│       ├── schools/    # .png/.jpg dos ícones de escolas
-│       └── abilities/  # .png/.jpg dos ícones de habilidades
+├── assets/icons/
+│   ├── weapons/
+│   ├── schools/
+│   ├── abilities/
+│   └── characters/
 ├── .gitignore
 ├── README.md
-└── CONTEXT.md          # este documento
+└── CONTEXT.md
 ```
 
-## 4. Schemas de dados
+## 4. Mecânica
 
-### Slots fixos (onde cada habilidade entra no grid 4×3)
+- 12 cartas em grid **4 linhas × 3 colunas**.
+- Turno = **3 rodadas**.
+- A cada rodada, selecionar **3 cartas** sem repetir linha nem coluna.
+- Cartas usadas voltam só no fim do turno.
+- Ultimate = **L4C1**, vem da escola primária e **não volta até o fim do combate**.
+
+### Slots
 
 | Linha | Coluna 1 | Coluna 2 | Coluna 3 |
 | --- | --- | --- | --- |
 | 1 — Vampiro | `move` | `swap-weapon` | `vampire-power` |
 | 2 — Arma | `move-attack` | `basic-attack` | `special-attack` |
-| 3 — Escola Primária | `veil` | `magic-1` | `magic-2` |
-| 4 — Escola Secundária | `ultimate` (da primária) | `magic-1` | `magic-2` |
+| 3 — Primária | `veil` | `magic-1` | `magic-2` |
+| 4 — Secundária | `ultimate` da primária | `magic-1` | `magic-2` |
+
+## 5. Dados
 
 ### `data/weapons.json`
 
-Array de armas. Cada arma tem **3 habilidades** (uma para cada slot da linha 2).
+Array de armas. Cada arma tem:
 
-```json
-[
-  {
-    "id": "sword",
-    "name": "Espada",
-    "icon": "assets/icons/weapons/sword.png",
-    "abilities": [
-      { "slot": "move-attack",    "id": "sword-charge", "name": "Investida",     "icon": "assets/icons/abilities/sword-charge.png", "effects": [{"kind":"move","value":1},{"kind":"attack","value":2}] },
-      { "slot": "basic-attack",   "id": "sword-slash",  "name": "Cortar",        "icon": "assets/icons/abilities/sword-slash.png",  "effects": [{"kind":"attack","value":2}] },
-      { "slot": "special-attack", "id": "sword-brutal", "name": "Lâmina Brutal", "icon": "assets/icons/abilities/sword-brutal.png", "effects": [{"kind":"attack","value":3}] }
-    ]
-  }
-]
-```
+- `id`, `name`, `icon`
+- `baseDamage` (ex.: `6+1d6`)
+- `abilities` com 3 slots: `move-attack`, `basic-attack`, `special-attack`
 
 ### `data/schools.json`
 
-Array de escolas de magia. Cada escola tem **4 habilidades**: véu + 2 magias + ultimate.
+Array com 6 escolas:
 
-```json
-[
-  {
-    "id": "blood",
-    "name": "Sangue",
-    "icon": "assets/icons/schools/blood.png",
-    "abilities": [
-      { "slot": "veil",     "id": "blood-veil",    "name": "Véu de Sangue",   "icon": "...", "effects": [{"kind":"text","text":"Véu"}] },
-      { "slot": "magic-1",  "id": "blood-spear",   "name": "Lança Sanguínea", "icon": "...", "effects": [{"kind":"attack","value":2,"ranged":true}] },
-      { "slot": "magic-2",  "id": "blood-thirst",  "name": "Sede Voraz",      "icon": "...", "effects": [{"kind":"heal","value":2}] },
-      { "slot": "ultimate", "id": "blood-tempest", "name": "Tempestade",      "icon": "...", "effects": [{"kind":"attack","value":4}] }
-    ]
-  }
-]
-```
+- `blood` — Sangue — vermelho
+- `frost` — Gelo — azul
+- `unholy` — Profano — verde escuro
+- `illusion` — Ilusão — ciano
+- `storm` — Raio — amarelo
+- `chaos` — Caos — roxo
+
+Cada escola tem 4 habilidades: `veil`, `magic-1`, `magic-2`, `ultimate`.
 
 ### `data/characters.json`
 
-```json
-[
-  {
-    "id": "raul",
-    "name": "Raul",
-    "icon": "assets/icons/characters/raul.png",
-    "equippedWeapon": "sword",
-    "inventory": ["sword"],
-    "primarySchool": "blood",
-    "secondarySchool": "frost",
-    "vampireAbilities": ["transform", "blood-regen"]
-  }
-]
-```
+Cada personagem referencia:
 
-### Tipos de efeito (`effect.kind`)
+- `equippedWeapon`
+- `inventory`
+- `primarySchool`
+- `secondarySchool`
+- `vampireAbilities`
 
-| Kind | Ícone | Campos | Notas |
-| --- | --- | --- | --- |
-| `move` | seta | `value` | mover N casas |
-| `attack` | espada (melee) ou alvo (ranged) | `value`, `ranged?` | dano N; `ranged: true` muda o ícone para alvo |
-| `heal` | cruz vermelha | `value` | curar N |
-| `defense` | escudo | `value` | bloquear N |
-| `text` | — | `text` | texto livre (Trocar Arma, Véu, etc.) |
+## 6. Assets
 
-## 5. Mecânica do jogo
+Caminhos padronizados:
 
-- O jogador tem **12 cartas** num grid de **4 linhas × 3 colunas**.
-- Combate dividido em **turnos de 3 rodadas**.
-- A cada rodada o jogador seleciona **3 cartas** que **não podem coincidir em linha nem em coluna**.
-- Cartas usadas só voltam no **fim do turno**.
-- **Exceção:** a **Ultimate** (linha 4 col 1, vinda da escola primária) **não volta até o fim do combate**.
-- **Linhas:**
-    - L1 — fixa: mover 3 / trocar arma / habilidade vampírica
-    - L2 — varia com a arma equipada (3 habilidades da arma)
-    - L3 — escola primária: véu + magia 1 + magia 2 (a de col 3 pode ser defensiva)
-    - L4 — col 1 = ultimate da primária; col 2 e 3 = magia 1 e magia 2 da secundária
+- Personagens: `assets/icons/characters/{id}.png`
+- Armas: `assets/icons/weapons/{id}.png`
+- Escolas: `assets/icons/schools/{id}.png`
+- Habilidades: `assets/icons/abilities/{ability-id}.png`
 
-## 6. Estado atual do código
+O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tracejado continua visível; se existir, a imagem aparece.
 
-### Arquivos versionados (Notion DB de Códigos)
+## 7. Estado atual
 
-- `.gitignore`, `README.md`, `CONTEXT.md`
-- `index.html` v4 — header + nav (Jogo/Armas/Escolas/Personagens) + grid de cartas + board SVG
-- `style.css` v6 — tema vampírico, 2 colunas, cartas 4:3, board hex
-- `app.js` v8 — carrega `data/*.json`, monta grid a partir do personagem ativo, ultimate herda a cor da escola primária
-- `board.js` v1 — tabuleiro hexagonal SVG (7×5)
-- `effects.js` v1 — `ICONS` + `renderEffect/Effects` compartilhados entre páginas
-- `weapons.html`/`weapons.js` v1 — biblioteca de armas
-- `schools.html`/`schools.js` v1 — biblioteca de escolas de magia
-- `characters.html`/`characters.js` v1 — biblioteca de personagens (resolve refs por id)
-- `data/weapons.json`, `data/schools.json`, `data/characters.json`
+- `index.html` v14 — página principal com nav, mão de cartas e tabuleiro; carrega `style.css?v=18`, `effects.js?v=11`, `app.js?v=23` e `board.js?v=1`.
+- `style.css` v18 — tema prata pálido, cards 240×180, cores por escola, imagens na mão/bibliotecas, área hex colorida, contador de ataques e tooltip por ícone `i`.
+- `app.js` v23 — carrega JSONs, monta grid por personagem, usa `renderEffects()` compartilhado e preserva `id`/`slot`/`icon` das habilidades.
+- `board.js` v1 — renderiza tabuleiro hexagonal SVG.
+- `effects.js` v11 — render compartilhado de efeitos; suporta modificador, dano fixo, alcance, múltiplos ataques, área hex colorida e descrição em hover.
+- `weapons.html` v4 / `weapons.js` v3 — biblioteca de armas com dano base e cards 4×3.
+- `schools.html` v3 / `schools.js` v3 — biblioteca das 6 escolas com cards 4×3 e cores.
+- `characters.html` v2 / `characters.js` v2 — biblioteca de personagens com refs por id e placeholders de imagem.
+- `data/weapons.json` v9 — Espada e Machados; Redemoinho e Arremessar Machados usam áreas hex.
+- `data/schools.json` v5 — Caos e Ilusão detalhadas; demais escolas ainda provisórias.
+- `data/characters.json` v2 — personagem padrão com inventário `sword` + `axes`.
 
-### Iconografia atual (em `app.js` `ICONS`)
+## 8. Convenções
 
-- `arrow` — movimentação
-- `sword` — ataque corpo-a-corpo
-- `target` — ataque à distância
-- `cross` — cura
-- `shield` — defesa
+- Indentação com **tab**.
+- Sem emojis dentro do código.
+- Comentários em português.
+- Variáveis/funções em inglês camelCase.
+- [CONTEXT.md](http://CONTEXT.md) deve ser sucinto.
+- Toda página de arquivo no Notion mantém versão (`v1`, `v2`, etc.) no bloco de código.
+- Sempre que um arquivo/página de código for modificado no Notion, marcar a propriedade `Atualizar` como checked.
 
-## 7. Convenções
+## 9. Roadmap
 
-### Código
+- **Fase 1 — Cartas** ✅ grid 4×3, seleção e visual das cartas.
+- **Fase 2 — Tabuleiro** 🟡 grid hexagonal renderizado; falta peão e interação carta↔tabuleiro.
+- **Fase 3 — Armas/Escolas** 🟡 bibliotecas, JSONs, dano base, cores e placeholders prontos; falta balanceamento e ícones reais.
+- **Fase 4 — Editor de cartas** ⚪ futuro.
 
-- Indentação com **tab**
-- Sem emojis dentro de código
-- Comentários em **português**
-- Funções e variáveis em **inglês** (camelCase)
+## 10. Histórico de commits
 
-### Commits (Conventional Commits)
-
-- `feat:` nova funcionalidade
-- `fix:` correção de bug
-- `chore:` manutenção/setup
-- `docs:` documentação
-- `refactor:` mudança de código sem alterar comportamento
-- `style:` mudança apenas visual/formatação
-
-### Notion (database de Códigos)
-
-- Toda nova entidade de código tem uma página correspondente na DB Códigos — Nas Cinzas V Rising
-- Cada página tem: bloco de contexto curto + bloco de código com versão nomeada (`v1`, `v2`, ...) e a versão é incrementada a cada update relevante
-- Properties obrigatórias: `Arquivo`, `Extensão`, `Camada`, `Fase`, `Repositório`, `Status`, `Linhas`, `Resumo`
-
-## 8. Roadmap (fases)
-
-- **Fase 1 — Cartas** ✅ grid 4×3, regra de seleção, layout das cartas com ícones
-- **Fase 2 — Tabuleiro** 🟡 grid hexagonal renderizado; falta peão, movimentação, interação carta↔tabuleiro
-- **Fase 3 — Armas/Escolas** 🟡 JSONs + páginas de biblioteca prontas; falta integrar com ícones .png e permitir trocar personagem ativo
-- **Fase 4 — Editor de cartas** ⚪ futuro: editor in-app de habilidades
-
-## 9. Histórico de commits
-
-1. `7b1826f` — initial commit with .gitignore and README (sem prefixo)
+1. `7b1826f` — initial commit with .gitignore and README
 2. `feat:` render 4x3 card grid with vampire theme
 3. `feat:` add card selection rule with row/column blocking
 4. `feat:` render hexagonal board with SVG
 5. `style:` two-column layout with hand on left and board on right
 6. `feat:` redesign card layout with image placeholder, name and effects
-7. `feat:` replace effect text with SVG icons (arrow/sword/target/cross/shield)
-8. `feat:` add library pages for weapons, schools and characters (inclui refactor de `app.js` para carregar de `data/*.json`, `effects.js` compartilhado e nav no header)
+7. `feat:` replace effect text with SVG icons
+8. `feat:` add library pages for weapons, schools and characters
+9. `feat:` add school colors, damage badges and icon placeholders
+10. `fix:` render whirlwind area indicators in game cards
+11. `feat:` add axes and chaos illusion school abilities
 
-## 10. Como manter este documento
+## 11. Próximos passos
 
-A cada commit registrado pelo usuário:
-
-1. Atualizar a seção **6. Estado atual do código** (versões dos arquivos, novos arquivos).
-2. Adicionar entrada em **9. Histórico de commits**.
-3. Atualizar **8. Roadmap** se uma fase mudou de estado.
-4. Atualizar **4. Schemas** se a estrutura de dados mudou.
-5. Atualizar **7. Convenções** se uma nova regra foi acordada.
+- Adicionar ícones `.png/.jpg` reais nas pastas de assets.
+- Definir as próximas escolas restantes.
+- Permitir escolher personagem ativo.
+- Integrar peão e movimentação no tabuleiro.
+- Começar interação carta↔hex no tabuleiro.

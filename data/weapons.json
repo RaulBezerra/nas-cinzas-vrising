@@ -8,7 +8,7 @@
 			{
 				"slot": "move-attack",
 				"id": "sword-charge",
-				"name": "Investida",
+				"name": "Mover e Atacar",
 				"icon": "assets/icons/abilities/sword-charge.png",
 				"effects": [
 					{ "kind": "move", "value": 2 },
@@ -18,7 +18,7 @@
 			{
 				"slot": "basic-attack",
 				"id": "sword-slash",
-				"name": "Cortar",
+				"name": "Ataque",
 				"icon": "assets/icons/abilities/sword-slash.png",
 				"effects": [{ "kind": "attack", "value": 0 }]
 			},
@@ -50,34 +50,45 @@
 		]
 	},
 	{
-		"id": "axe",
-		"name": "Machado",
-		"icon": "assets/icons/weapons/axe.png",
-		"baseDamage": "7+1d8",
+		"id": "axes",
+		"name": "Machados",
+		"icon": "assets/icons/weapons/axes.png",
+		"baseDamage": "6+1d4",
 		"abilities": [
 			{
 				"slot": "move-attack",
-				"id": "axe-leap",
-				"name": "Salto Brutal",
-				"icon": "assets/icons/abilities/axe-leap.png",
+				"id": "axes-move-attack",
+				"name": "Mover e Atacar",
+				"icon": "assets/icons/abilities/axes-move-attack.png",
 				"effects": [
 					{ "kind": "move", "value": 2 },
-					{ "kind": "attack", "value": 2 }
+					{ "kind": "attack", "value": 0 }
 				]
 			},
 			{
 				"slot": "basic-attack",
-				"id": "axe-cleave",
-				"name": "Fender",
-				"icon": "assets/icons/abilities/axe-cleave.png",
-				"effects": [{ "kind": "attack", "value": 3 }]
+				"id": "axes-attack",
+				"name": "Ataque",
+				"icon": "assets/icons/abilities/axes-attack.png",
+				"effects": [{ "kind": "attack", "value": 1 }]
 			},
 			{
 				"slot": "special-attack",
-				"id": "axe-whirlwind",
-				"name": "Redemoinho",
-				"icon": "assets/icons/abilities/axe-whirlwind.png",
-				"effects": [{ "kind": "attack", "value": 2 }]
+				"id": "axes-throw",
+				"name": "Arremessar Machados",
+				"icon": "assets/icons/abilities/axes-throw.png",
+				"effects": [
+					{
+						"kind": "attack",
+						"value": -3,
+						"description": "Ataque -3 na área laranja, e ataque + stun na área vermelha.",
+						"area": {
+							"origin": "n",
+							"orangeHits": ["ne", "se", "sw", "nw"],
+							"strongHits": ["s"]
+						}
+					}
+				]
 			}
 		]
 	}

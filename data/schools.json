@@ -112,23 +112,47 @@
 			{
 				"slot": "veil",
 				"id": "illusion-veil",
-				"name": "Véu de Ilusão",
+				"name": "Véu da Ilusão",
 				"icon": "assets/icons/abilities/illusion-veil.png",
-				"effects": [{ "kind": "text", "text": "Véu" }]
+				"effects": [
+					{ "kind": "move", "value": 2 },
+					{
+						"kind": "text",
+						"text": "Retorno",
+						"description": "No final do turno, pode voltar para onde estava antes de jogar esta carta."
+					}
+				]
 			},
 			{
 				"slot": "magic-1",
-				"id": "illusion-dagger",
-				"name": "Adaga Ilusória",
-				"icon": "assets/icons/abilities/illusion-dagger.png",
-				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+				"id": "illusion-spear",
+				"name": "Lança Fantasma",
+				"icon": "assets/icons/abilities/illusion-spear.png",
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{ "kind": "range", "value": 4 },
+					{
+						"kind": "attack",
+						"damage": 6,
+						"ranged": true,
+						"description": "Move 1 e causa 6 de dano em linha reta até 4 casas."
+					}
+				]
 			},
 			{
 				"slot": "magic-2",
-				"id": "illusion-strike",
-				"name": "Golpe Ilusório",
-				"icon": "assets/icons/abilities/illusion-strike.png",
-				"effects": [{ "kind": "attack", "value": 3 }]
+				"id": "illusion-aegis",
+				"name": "Égide Fantasma",
+				"icon": "assets/icons/abilities/illusion-aegis.png",
+				"effects": [
+					{ "kind": "range", "value": 5 },
+					{
+						"kind": "defense",
+						"value": 6,
+						"description": "Dá 6 de escudo para si ou aliado até 5 casas, até voltar seu turno. O alvo recebe +1 no próximo movimento."
+					},
+					{ "kind": "move", "value": "+1" }
+				]
 			},
 			{
 				"slot": "ultimate",
@@ -184,28 +208,64 @@
 				"id": "chaos-veil",
 				"name": "Véu do Caos",
 				"icon": "assets/icons/abilities/chaos-veil.png",
-				"effects": [{ "kind": "text", "text": "Véu" }]
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{
+						"kind": "text",
+						"text": "Executar carta aqui",
+						"description": "Durante este véu, pode executar uma carta neste ponto da sequência."
+					},
+					{ "kind": "move", "value": 1 }
+				]
 			},
 			{
 				"slot": "magic-1",
-				"id": "chaos-fireball",
-				"name": "Bola de Fogo",
-				"icon": "assets/icons/abilities/chaos-fireball.png",
-				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+				"id": "chaos-void",
+				"name": "Void",
+				"icon": "assets/icons/abilities/chaos-void.png",
+				"effects": [
+					{ "kind": "range", "value": 3 },
+					{
+						"kind": "attack",
+						"damage": 6,
+						"ranged": true,
+						"description": "Alcance 3. Causa 6 de dano e puxa 1 alvo para o centro.",
+						"area": {
+							"self": true,
+							"hits": ["n", "ne", "se", "s", "sw", "nw"]
+						}
+					}
+				]
 			},
 			{
 				"slot": "magic-2",
-				"id": "chaos-blast",
-				"name": "Explosão Caótica",
-				"icon": "assets/icons/abilities/chaos-blast.png",
-				"effects": [{ "kind": "attack", "value": 3 }]
+				"id": "chaos-volley",
+				"name": "Esferas do Caos",
+				"icon": "assets/icons/abilities/chaos-volley.png",
+				"effects": [
+					{
+						"kind": "attack",
+						"damage": 5,
+						"count": 2,
+						"ranged": true
+					}
+				]
 			},
 			{
 				"slot": "ultimate",
-				"id": "chaos-annihilation",
-				"name": "Aniquilação",
-				"icon": "assets/icons/abilities/chaos-annihilation.png",
-				"effects": [{ "kind": "attack", "value": 5 }]
+				"id": "chaos-barrage",
+				"name": "Barragem do Caos",
+				"icon": "assets/icons/abilities/chaos-barrage.png",
+				"effects": [
+					{ "kind": "range", "value": 4 },
+					{
+						"kind": "attack",
+						"damage": "4+1d6",
+						"count": 4,
+						"ranged": true,
+						"description": "4 ataques de 4+1d6 de dano, alcance 4. Alvos adjacentes recebem o dano do dado."
+					}
+				]
 			}
 		]
 	}

@@ -1,11 +1,11 @@
 /* ============================
    Nas Cinzas — V Rising
-   effects.js v8
+   effects.js v11
    Biblioteca de ícones SVG, padrões de área em hex e funções de render.
    Carregar antes de qualquer página que mostre cartas/habilidades.
    ============================ */
 
-console.log("effects.js v8 loaded");
+console.log("effects.js v11 loaded");
 
 const ICONS = {
 	arrow: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10h11V5l7 7-7 7v-5H3z"/></svg>',
@@ -34,12 +34,23 @@ function formatModifier(value = 0) {
 	return value > 0 ? `+${value}` : `${value}`;
 }
 
+function renderInfoIndicator(description) {
+	if (!description) return "";
+	return `<span class="effect-info" aria-label="Informação da habilidade">i<span class="effect-tooltip">${description}</span></span>`;
+}
+
+function renderAttackValue(effect) {
+	if (effect.damage !== undefined) return `${effect.damage}`;
+	return formatModifier(effect.value);
+}
+
 function renderAttackEffect(effect) {
 	const iconKey = effect.ranged ? "target" : "sword";
-	const modifier = formatModifier(effect.value);
-	const valueHtml = modifier ? `<span class="effect-value">${modifier}</span>` : "";
+	const value = renderAttackValue(effect);
+	const countHtml = effect.count ? `<span class="effect-count">${effect.count}×</span>` : "";
+	const valueHtml = value ? `<span class="effect-value">${value}</span>` : "";
 	const areaHtml = effect.area ? renderAreaEffect(effect.area) : "";
-	return `<div class="effect attack-effect"><span class="effect-icon">${ICONS[iconKey]}</span>${valueHtml}${areaHtml}</div>`;
+	return `<div class="effect attack-effect"><span class="effect-icon">${ICONS[iconKey]}</span>${countHtml}${valueHtml}${areaHtml}</div>`;
 }
 
 function areaHexPoints(cx, cy, r = 16) {
@@ -51,12 +62,16 @@ function areaHexPoints(cx, cy, r = 16) {
 
 function renderAreaEffect(effect) {
 	const hits = new Set(effect.hits || []);
+	const orangeHits = new Set(effect.orangeHits || []);
+	const strongHits = new Set(effect.strongHits || []);
 	const order = ["n", "ne", "se", "s", "sw", "nw", "self"];
 	const hexes = order.map((key) => {
 		const [cx, cy] = AREA_HEXES[key];
 		const classes = ["area-hex"];
-		if (key === "self" && effect.self) classes.push("self");
+		if ((key === "self" && effect.self) || key === effect.origin) classes.push("self");
 		if (hits.has(key)) classes.push("hit");
+		if (orangeHits.has(key)) classes.push("orange-hit");
+		if (strongHits.has(key)) classes.push("strong-hit");
 		return `<polygon class="${classes.join(" ")}" points="${areaHexPoints(cx, cy)}"></polygon>`;
 	}).join("");
 	return `<div class="effect-area"><svg class="area-pattern" viewBox="15 5 90 100" aria-hidden="true">${hexes}</svg></div>`;
@@ -66,6 +81,8 @@ function renderEffect(effect) {
 	switch (effect.kind) {
 		case "move":
 			return iconEffect("arrow", effect.value);
+		case "range":
+			return iconEffect("target", effect.value);
 		case "attack":
 			return renderAttackEffect(effect);
 		case "heal":
@@ -85,7 +102,10 @@ function renderEffects(effects) {
 		return `<div class="effect effect-empty">—</div>`;
 	}
 
+	const description = effects.find((effect) => effect.description)?.description;
+	const infoHtml = renderInfoIndicator(description);
 	const html = [];
+
 	for (let i = 0; i < effects.length; i++) {
 		const effect = effects[i];
 		const next = effects[i + 1];
@@ -97,5 +117,5 @@ function renderEffects(effects) {
 			html.push(renderEffect(effect));
 		}
 	}
-	return html.join("");
+	return `${infoHtml}${html.join("")}`;
 }

@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   app.js v19
+   app.js v23
    Monta a mão do jogador a partir dos JSONs. O render de efeitos é
    compartilhado via effects.js (renderEffects global).
    ============================ */
@@ -13,14 +13,14 @@ const VAMPIRE_ROW = [
 ];
 
 const MAX_SELECTION = 3;
-const DATA_VERSION = "area-v9";
+const DATA_VERSION = "illusion-v1";
 
 const DEFAULT_WHIRLWIND_AREA = {
 	self: true,
 	hits: ["n", "ne", "se", "s", "sw", "nw"],
 };
 
-console.log("app.js v19 loaded");
+console.log("app.js v23 loaded");
 
 const state = {
 	selected: new Set(),
@@ -135,15 +135,18 @@ function effectsWithFallbackArea(card) {
 
 	const hasArea = card.effects.some((effect) => effect.area || effect.kind === "area");
 	if (hasArea) {
-		console.log("Redemoinho recebeu area do JSON:", card.effects);
 		return card.effects;
 	}
 
-	console.warn("Redemoinho chegou sem area; aplicando fallback:", card.effects);
 	return card.effects.map((effect) => {
 		if (effect.kind !== "attack") return effect;
 		return { ...effect, area: DEFAULT_WHIRLWIND_AREA };
 	});
+}
+
+function iconImg(path) {
+	if (!path) return "";
+	return `<img src="${path}" alt="" onerror="this.remove()" onload="this.parentElement.classList.add('img-loaded')">`;
 }
 
 // Ações ============================
@@ -171,7 +174,7 @@ function renderRowLabel(label) {
 	const el = document.createElement("div");
 	el.className = "row-label";
 	el.innerHTML = `
-		<div class="row-icon-placeholder"></div>
+		<div class="row-icon-placeholder">${iconImg(label.icon)}</div>
 		<div class="row-name">${label.name}</div>
 		${label.note ? `<div class="row-note">${label.note}</div>` : ""}
 	`;
@@ -191,7 +194,7 @@ function renderCard(card) {
 
 	el.innerHTML = `
 		<div class="card-top">
-			<div class="card-img-placeholder"></div>
+			<div class="card-img-placeholder">${iconImg(card.icon)}</div>
 			<div class="card-name">${card.name}</div>
 		</div>
 		<div class="card-effects">${renderEffects(effects)}</div>

@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   style.css v15
+   style.css v18
    Tema prata pálido e neutro. Inclui nav, páginas de biblioteca,
    cores das 6 escolas de magia e suporte a <img> nos placeholders.
    ============================ */
@@ -210,6 +210,7 @@ main {
 /* Carta base — usada no jogo e nas bibliotecas */
 .card,
 .ability-card {
+	position: relative;
 	background: linear-gradient(180deg, var(--bg-panel-2) 0%, var(--bg-panel) 100%);
 	border: 1px solid var(--border);
 	border-radius: 6px;
@@ -258,6 +259,7 @@ main {
 
 /* Quando uma imagem carrega, esconde o placeholder tracejado */
 .card-img-placeholder.img-loaded,
+.row-icon-placeholder.img-loaded,
 .library-card-icon.img-loaded,
 .character-row-icon.img-loaded {
 	border: none;
@@ -265,6 +267,7 @@ main {
 }
 
 .card-img-placeholder img,
+.row-icon-placeholder img,
 .library-card-icon img,
 .character-row-icon img {
 	width: 100%;
@@ -377,9 +380,80 @@ main {
 	stroke: var(--accent-bright);
 }
 
-.area-hex.hit {
+.area-hex.hit,
+.area-hex.strong-hit {
 	fill: #a83838;
 	stroke: #d46a6a;
+}
+
+.area-hex.orange-hit {
+	fill: #c46a2a;
+	stroke: #e0985a;
+}
+
+.effect-count {
+	color: var(--accent-bright);
+	font-size: 1.05rem;
+	line-height: 1;
+}
+
+.effect-info {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 18px;
+	height: 18px;
+	border: 1px solid var(--border-strong);
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(13, 14, 16, 0.85);
+	color: var(--accent-bright);
+	font-family: "Consolas", "Courier New", monospace;
+	font-size: 0.75rem;
+	font-weight: 700;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	cursor: help;
+	z-index: 6;
+}
+
+.effect-tooltip {
+	position: absolute;
+	right: 0;
+	bottom: calc(100% + 8px);
+	width: 190px;
+	padding: 8px 10px;
+	border: 1px solid var(--border-strong);
+	border-radius: 6px;
+	background: rgba(13, 14, 16, 0.96);
+	color: var(--ink);
+	font-family: "Cormorant Garamond", "Georgia", serif;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.25;
+	text-transform: none;
+	letter-spacing: normal;
+	text-align: center;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease;
+	z-index: 7;
+}
+
+.effect-tooltip::after {
+	content: "";
+	position: absolute;
+	right: 4px;
+	top: 100%;
+	border: 6px solid transparent;
+	border-top-color: var(--border-strong);
+}
+
+.effect-info:hover .effect-tooltip {
+	opacity: 1;
 }
 
 /* Variantes de tipo (bordas) — valem para .card e .ability-card */
