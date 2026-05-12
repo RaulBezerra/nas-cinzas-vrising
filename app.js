@@ -1,7 +1,15 @@
 /* ============================
    Nas Cinzas — V Rising
-   app.js v3
+   app.js v6
    ============================ */
+
+const ICONS = {
+	arrow: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10h11V5l7 7-7 7v-5H3z"/></svg>',
+	sword: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 3.4V14.5h-4.4V5.4L12 2z"/><rect x="6" y="14.5" width="12" height="1.8" rx="0.4"/><rect x="11" y="16.3" width="2" height="4.2"/><circle cx="12" cy="21.5" r="1.3"/></svg>',
+	target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
+	cross: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7V2z"/></svg>',
+	shield: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v7c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/></svg>',
+};
 
 const rowLabels = [
 	{ name: "Vampiro", note: "" },
@@ -16,20 +24,20 @@ const cards = [
 	{ row: 1, col: 2, name: "Trocar Arma", type: "utility", effects: [{ kind: "text", text: "Trocar arma" }] },
 	{ row: 1, col: 3, name: "Poder Sanguíneo", type: "vampire", effects: [{ kind: "text", text: "Habilidade vampírica" }] },
 
-	// Linha 2 — Arma (Espada, placeholder)
+	// Linha 2 — Arma (Espada, placeholder; ataques corpo-a-corpo)
 	{ row: 2, col: 1, name: "Investida", type: "weapon", effects: [{ kind: "move", value: 1 }, { kind: "attack", value: 2 }] },
 	{ row: 2, col: 2, name: "Cortar", type: "weapon", effects: [{ kind: "attack", value: 2 }] },
 	{ row: 2, col: 3, name: "Lâmina Brutal", type: "weapon", effects: [{ kind: "attack", value: 3 }] },
 
 	// Linha 3 — Escola Primária (Sangue, placeholder)
 	{ row: 3, col: 1, name: "Véu de Sangue", type: "magic-primary", effects: [{ kind: "text", text: "Véu" }] },
-	{ row: 3, col: 2, name: "Lança Sanguínea", type: "magic-primary", effects: [{ kind: "attack", value: 2 }] },
-	{ row: 3, col: 3, name: "Sede Voraz", type: "magic-primary", effects: [{ kind: "text", text: "Cura 2" }] },
+	{ row: 3, col: 2, name: "Lança Sanguínea", type: "magic-primary", effects: [{ kind: "attack", value: 2, ranged: true }] },
+	{ row: 3, col: 3, name: "Sede Voraz", type: "magic-primary", effects: [{ kind: "heal", value: 2 }] },
 
 	// Linha 4 — Escola Secundária (Gelo, placeholder)
 	{ row: 4, col: 1, name: "—", type: "magic-secondary", effects: [] },
-	{ row: 4, col: 2, name: "Lasca Glacial", type: "magic-secondary", effects: [{ kind: "attack", value: 1 }] },
-	{ row: 4, col: 3, name: "Barreira Glacial", type: "magic-secondary", effects: [{ kind: "text", text: "Defesa 2" }] },
+	{ row: 4, col: 2, name: "Lasca Glacial", type: "magic-secondary", effects: [{ kind: "attack", value: 1, ranged: true }] },
+	{ row: 4, col: 3, name: "Barreira Glacial", type: "magic-secondary", effects: [{ kind: "defense", value: 2 }] },
 ];
 
 const MAX_SELECTION = 3;
@@ -89,14 +97,24 @@ function renderRowLabel(label) {
 	return el;
 }
 
+function iconEffect(iconKey, value, extraClass = "") {
+	return `<div class="effect ${extraClass}"><span class="effect-icon">${ICONS[iconKey]}</span><span class="effect-value">${value}</span></div>`;
+}
+
 function renderEffect(effect) {
-	if (effect.kind === "move") {
-		return `<div class="effect">Mover <span class="effect-value">${effect.value}</span></div>`;
+	switch (effect.kind) {
+		case "move":
+			return iconEffect("arrow", effect.value);
+		case "attack":
+			return iconEffect(effect.ranged ? "target" : "sword", effect.value);
+		case "heal":
+			return iconEffect("cross", effect.value, "effect-heal");
+		case "defense":
+			return iconEffect("shield", effect.value);
+		case "text":
+		default:
+			return `<div class="effect effect-text">${effect.text}</div>`;
 	}
-	if (effect.kind === "attack") {
-		return `<div class="effect">Atacar <span class="effect-value">${effect.value}</span></div>`;
-	}
-	return `<div class="effect effect-text">${effect.text}</div>`;
 }
 
 function renderEffects(effects) {
