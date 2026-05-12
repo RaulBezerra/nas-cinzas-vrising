@@ -1,15 +1,9 @@
 /* ============================
    Nas Cinzas — V Rising
-   app.js v9
+   app.js v19
+   Monta a mão do jogador a partir dos JSONs. O render de efeitos é
+   compartilhado via effects.js (renderEffects global).
    ============================ */
-
-const ICONS = {
-	arrow: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10h11V5l7 7-7 7v-5H3z"/></svg>',
-	sword: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 3.4V14.5h-4.4V5.4L12 2z"/><rect x="6" y="14.5" width="12" height="1.8" rx="0.4"/><rect x="11" y="16.3" width="2" height="4.2"/><circle cx="12" cy="21.5" r="1.3"/></svg>',
-	target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
-	cross: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7V2z"/></svg>',
-	shield: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v7c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z"/></svg>',
-};
 
 // Linha 1 do grid — fixa pra todo personagem
 const VAMPIRE_ROW = [
@@ -19,6 +13,14 @@ const VAMPIRE_ROW = [
 ];
 
 const MAX_SELECTION = 3;
+const DATA_VERSION = "area-v9";
+
+const DEFAULT_WHIRLWIND_AREA = {
+	self: true,
+	hits: ["n", "ne", "se", "s", "sw", "nw"],
+};
+
+console.log("app.js v19 loaded");
 
 const state = {
 	selected: new Set(),
@@ -30,9 +32,9 @@ const state = {
 
 async function loadData() {
 	const [weapons, schools, characters] = await Promise.all([
-		fetch("data/weapons.json").then((r) => r.json()),
-		fetch("data/schools.json").then((r) => r.json()),
-		fetch("data/characters.json").then((r) => r.json()),
+		fetch(`data/weapons.json?v=${DATA_VERSION}`).then((r) => r.json()),
+		fetch(`data/schools.json?v=${DATA_VERSION}`).then((r) => r.json()),
+		fetch(`data/characters.json?v=${DATA_VERSION}`).then((r) => r.json()),
 	]);
 	return { weapons, schools, characters };
 }
@@ -82,12 +84,16 @@ function buildGrid(character, weapons, schools) {
 					? findAbility(primary.abilities, "ultimate")
 					: findAbility(secondary.abilities, slot);
 			}
+
 			const isUltimate = r === 3 && c === 0;
 			// Ultimate visualmente pertence à escola primária, mesmo estando na linha 4
 			const baseType = isUltimate ? `school-${primary.id}` : rowTypes[r];
+
 			cards.push({
 				row: r + 1,
 				col: c + 1,
+				id: ab ? ab.id : null,
+				slot,
 				name: ab ? ab.name : "—",
 				type: baseType + (isUltimate ? " ultimate" : ""),
 				icon: ab ? ab.icon : null,
@@ -116,6 +122,28 @@ function isBlocked(card) {
 		if (+r === card.row || +c === card.col) return true;
 	}
 	return false;
+}
+
+function isSwordWhirlwind(card) {
+	return card.id === "sword-whirlwind" || (card.slot === "special-attack" && card.name === "Redemoinho");
+}
+
+function effectsWithFallbackArea(card) {
+	if (!isSwordWhirlwind(card)) {
+		return card.effects;
+	}
+
+	const hasArea = card.effects.some((effect) => effect.area || effect.kind === "area");
+	if (hasArea) {
+		console.log("Redemoinho recebeu area do JSON:", card.effects);
+		return card.effects;
+	}
+
+	console.warn("Redemoinho chegou sem area; aplicando fallback:", card.effects);
+	return card.effects.map((effect) => {
+		if (effect.kind !== "attack") return effect;
+		return { ...effect, area: DEFAULT_WHIRLWIND_AREA };
+	});
 }
 
 // Ações ============================
@@ -150,37 +178,11 @@ function renderRowLabel(label) {
 	return el;
 }
 
-function iconEffect(iconKey, value, extraClass = "") {
-	return `<div class="effect ${extraClass}"><span class="effect-icon">${ICONS[iconKey]}</span><span class="effect-value">${value}</span></div>`;
-}
-
-function renderEffect(effect) {
-	switch (effect.kind) {
-		case "move":
-			return iconEffect("arrow", effect.value);
-		case "attack":
-			return iconEffect(effect.ranged ? "target" : "sword", effect.value);
-		case "heal":
-			return iconEffect("cross", effect.value, "effect-heal");
-		case "defense":
-			return iconEffect("shield", effect.value);
-		case "text":
-		default:
-			return `<div class="effect effect-text">${effect.text}</div>`;
-	}
-}
-
-function renderEffects(effects) {
-	if (!effects || effects.length === 0) {
-		return `<div class="effect effect-empty">—</div>`;
-	}
-	return effects.map(renderEffect).join("");
-}
-
 function renderCard(card) {
 	const el = document.createElement("div");
 	const selected = isSelected(card);
 	const blocked = !selected && isBlocked(card);
+	const effects = effectsWithFallbackArea(card);
 
 	const classes = ["card", ...card.type.split(" ")];
 	if (selected) classes.push("selected");
@@ -192,7 +194,7 @@ function renderCard(card) {
 			<div class="card-img-placeholder"></div>
 			<div class="card-name">${card.name}</div>
 		</div>
-		<div class="card-effects">${renderEffects(card.effects)}</div>
+		<div class="card-effects">${renderEffects(effects)}</div>
 	`;
 
 	if (!blocked) {

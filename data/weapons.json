@@ -11,8 +11,8 @@
 				"name": "Investida",
 				"icon": "assets/icons/abilities/sword-charge.png",
 				"effects": [
-					{ "kind": "move", "value": 1 },
-					{ "kind": "attack", "value": 2 }
+					{ "kind": "move", "value": 2 },
+					{ "kind": "attack", "value": -2 }
 				]
 			},
 			{
@@ -20,14 +20,32 @@
 				"id": "sword-slash",
 				"name": "Cortar",
 				"icon": "assets/icons/abilities/sword-slash.png",
-				"effects": [{ "kind": "attack", "value": 2 }]
+				"effects": [{ "kind": "attack", "value": 0 }]
 			},
 			{
 				"slot": "special-attack",
-				"id": "sword-brutal",
-				"name": "Lâmina Brutal",
-				"icon": "assets/icons/abilities/sword-brutal.png",
-				"effects": [{ "kind": "attack", "value": 3 }]
+				"id": "sword-whirlwind",
+				"name": "Redemoinho",
+				"icon": "assets/icons/abilities/sword-whirlwind.png",
+				"effects": [
+					{
+						"kind": "attack",
+						"value": -2,
+						"area": {
+							"self": true,
+							"hits": ["n", "ne", "se", "s", "sw", "nw"]
+						}
+					},
+					{ "kind": "move", "value": 1 },
+					{
+						"kind": "attack",
+						"value": -2,
+						"area": {
+							"self": true,
+							"hits": ["n", "ne", "se", "s", "sw", "nw"]
+						}
+					}
+				]
 			}
 		]
 	},
