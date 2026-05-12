@@ -1,0 +1,127 @@
+/* ============================
+   Nas Cinzas — V Rising
+   style.css v1
+   ============================ */
+
+:root {
+	--bg-base: #0e0a0a;
+	--bg-panel: #1a1010;
+	--ink: #e8d9c9;
+	--ink-dim: #8a7065;
+	--blood: #8a0d1e;
+	--blood-bright: #c41e3a;
+	--gold: #c9a25a;
+
+	--card-w: 240px;
+	--card-h: 180px;
+	--gap: 12px;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: "Cormorant Garamond", "Georgia", serif;
+	background:
+		radial-gradient(circle at 50% 0%, #2a1414 0%, var(--bg-base) 60%);
+	color: var(--ink);
+	min-height: 100vh;
+	padding: 32px 24px;
+}
+
+header {
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+header h1 {
+	font-size: 2.4rem;
+	letter-spacing: 0.05em;
+	color: var(--blood-bright);
+	text-shadow: 0 0 12px rgba(196, 30, 58, 0.4);
+}
+
+header .subtitle {
+	color: var(--ink-dim);
+	font-style: italic;
+	margin-top: 4px;
+}
+
+main {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.card-grid-wrapper h2 {
+	color: var(--gold);
+	font-weight: 400;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	margin-bottom: 16px;
+	border-bottom: 1px solid var(--ink-dim);
+	padding-bottom: 8px;
+}
+
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(3, var(--card-w));
+	grid-template-rows: repeat(4, var(--card-h));
+	gap: var(--gap);
+	justify-content: center;
+}
+
+.card {
+	background: linear-gradient(180deg, #2a1414 0%, var(--bg-panel) 100%);
+	border: 1px solid var(--blood);
+	border-radius: 6px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	box-shadow:
+		inset 0 0 12px rgba(196, 30, 58, 0.15),
+		0 2px 8px rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+	transform: translateY(-4px);
+	box-shadow:
+		inset 0 0 18px rgba(196, 30, 58, 0.3),
+		0 6px 14px rgba(0, 0, 0, 0.7);
+}
+
+.card-header {
+	font-size: 0.7rem;
+	color: var(--ink-dim);
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.card-name {
+	font-size: 1.1rem;
+	color: var(--ink);
+	text-align: center;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.card-footer {
+	font-size: 0.7rem;
+	color: var(--gold);
+	text-align: right;
+	font-style: italic;
+}
+
+/* variantes visuais por tipo de carta */
+.card.movement { border-color: #5a7a8a; }
+.card.utility { border-color: var(--ink-dim); }
+.card.vampire { border-color: var(--blood-bright); }
+.card.weapon { border-color: #8a6a3a; }
+.card.magic-primary { border-color: #6a3a8a; }
+.card.magic-secondary { border-color: #3a6a8a; }
