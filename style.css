@@ -1,9 +1,10 @@
 /* ============================
    Nas Cinzas — V Rising
-   style.css v20
+   style.css v22
    Tema prata pálido e neutro. Inclui nav, páginas de biblioteca,
    cores das 6 escolas de magia, suporte a <img> nos placeholders,
-   estilos do editor de mapas e painel de peças.
+   estilos do editor de mapas, painel de peças, seletor de
+   personagem no jogo e modal de edição de personagens.
    ============================ */
 
 :root {
@@ -270,7 +271,8 @@ main {
 .card-img-placeholder img,
 .row-icon-placeholder img,
 .library-card-icon img,
-.character-row-icon img {
+.character-row-icon img,
+.char-header-weapon-icon img {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
@@ -501,6 +503,38 @@ main {
 /* Tabuleiro hexagonal */
 .board { display: block; width: 100%; height: auto; }
 
+.board-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 16px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--ink-dim);
+}
+
+.board-header .section-title {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.map-select {
+	background: var(--bg-panel-2);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	color: var(--ink);
+	font-family: inherit;
+	font-size: 0.78rem;
+	padding: 4px 8px;
+	cursor: pointer;
+	outline: none;
+	transition: border-color 0.15s;
+}
+
+.map-select:focus,
+.map-select:hover { border-color: var(--border-strong); }
+
 .hex {
 	fill: var(--bg-panel);
 	stroke: var(--ink-dim);
@@ -519,6 +553,39 @@ main {
 	font-size: 8px;
 	font-family: "Consolas", "Courier New", monospace;
 	text-anchor: middle;
+	pointer-events: none;
+	user-select: none;
+}
+
+/* Tipos de terreno no tabuleiro do jogo */
+.hex-barreira {
+	fill: #1c2e1c;
+	stroke: #4a6a3a;
+	stroke-width: 1.5;
+}
+
+.hex-blocked {
+	fill: #100808;
+	stroke: #6a2e2e;
+	stroke-width: 1.5;
+	cursor: not-allowed;
+}
+
+.hex-blocked:hover {
+	fill: #100808;
+	stroke: #6a2e2e;
+}
+
+/* Peças no tabuleiro do jogo */
+.board-piece { pointer-events: none; }
+
+.board-piece-label {
+	fill: rgba(255, 255, 255, 0.92);
+	font-size: 11px;
+	font-weight: 700;
+	font-family: "Cormorant Garamond", "Georgia", serif;
+	text-anchor: middle;
+	dominant-baseline: central;
 	pointer-events: none;
 	user-select: none;
 }
@@ -1151,3 +1218,450 @@ main.editor-layout {
 	flex-shrink: 0;
 	border: 1px solid rgba(255,255,255,0.2);
 }
+
+/* ============================
+   Seletor de personagem no jogo
+   ============================ */
+
+.char-bar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 10px;
+	padding: 8px 14px;
+	background: var(--bg-panel);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+}
+
+.char-bar-label {
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--ink-dim);
+	flex-shrink: 0;
+}
+
+.char-select {
+	flex: 1;
+	background: var(--bg-base);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	color: var(--ink);
+	font-family: inherit;
+	font-size: 0.9rem;
+	padding: 4px 8px;
+	outline: none;
+	cursor: pointer;
+}
+
+.char-select:focus { border-color: var(--accent-bright); }
+
+.char-bar-link {
+	font-size: 0.72rem;
+	color: var(--ink-dim);
+	text-decoration: none;
+	flex-shrink: 0;
+	letter-spacing: 0.04em;
+	transition: color 0.15s;
+}
+
+.char-bar-link:hover { color: var(--highlight); }
+
+/* ============================
+   Biblioteca de personagens — editor
+   ============================ */
+
+.library-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1.25rem;
+}
+
+.library-header .section-title { margin: 0; }
+
+/* Portrait de personagem — maior, borda sólida, altura adapta à imagem */
+.character .library-card-icon {
+	width: 96px;
+	height: auto;
+	min-height: 64px;
+	border-style: solid;
+	border-color: var(--border-strong);
+	border-radius: 6px;
+	flex-shrink: 0;
+	overflow: hidden;
+}
+
+.character .library-card-icon img {
+	width: 100%;
+	height: auto;
+	object-fit: unset;
+	display: block;
+}
+
+/* Header do card de personagem — 2 colunas: portrait + info */
+.char-card-header {
+	align-items: start;
+	gap: 1rem;
+}
+
+.char-header-body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+	flex: 1;
+	padding-top: 2px;
+}
+
+.char-header-top {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+.char-header-top h3 { flex: 1; min-width: 0; }
+
+.char-header-weapon {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	background: var(--bg-panel-2);
+	border-radius: 4px;
+	padding: 5px 8px;
+}
+
+.char-header-weapon-icon {
+	width: 22px;
+	height: 22px;
+	border: 1px dashed var(--border-strong);
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+.char-header-weapon-name {
+	flex: 1;
+	font-size: 0.88rem;
+	color: var(--ink);
+}
+
+.char-header-no-weapon {
+	font-size: 0.78rem;
+	color: var(--ink-dim);
+	font-style: italic;
+}
+
+/* Tipo de sangue no header do card */
+.char-header-meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.char-header-meta-label {
+	font-size: 0.65rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--ink-dim);
+	flex-shrink: 0;
+}
+
+.char-header-meta-value {
+	font-size: 0.88rem;
+	color: var(--ink);
+}
+
+/* Arma equipada destacada no inventário */
+.char-row-equipped {
+	border: 1px solid var(--highlight);
+	background: rgba(201, 197, 168, 0.06);
+}
+
+.char-row-equipped .character-row-name {
+	color: var(--highlight);
+}
+
+/* Cards de tipo de sangue */
+.blood-type-card .library-card-header {
+	align-items: center;
+}
+
+.blood-type-body {
+	margin-top: 0.75rem;
+	padding-top: 0.75rem;
+	border-top: 1px dashed var(--border);
+}
+
+.blood-type-placeholder {
+	font-size: 0.82rem;
+	color: var(--ink-dim);
+	font-style: italic;
+}
+
+.blood-section {
+	margin-top: 0.75rem;
+	padding-top: 0.75rem;
+	border-top: 1px dashed var(--border);
+}
+
+.blood-section-title {
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	color: var(--ink-dim);
+	margin: 0 0 0.5rem 0;
+	letter-spacing: 0.08em;
+	font-weight: 500;
+}
+
+.blood-passives-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.blood-passives-list li {
+	font-size: 0.88rem;
+	color: var(--ink);
+	padding: 6px 10px;
+	background: var(--bg-panel-2);
+	border-radius: 4px;
+	border-left: 2px solid var(--heal);
+	line-height: 1.4;
+}
+
+.blood-vpower-card {
+	width: var(--ability-card-w);
+}
+
+.char-edit-btn {
+	background: transparent;
+	border: 1px solid var(--border-strong);
+	color: var(--ink-dim);
+	width: 28px;
+	height: 28px;
+	padding: 5px;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	margin-left: auto;
+	transition: border-color 0.15s, color 0.15s;
+}
+
+.char-edit-btn:hover {
+	border-color: var(--highlight);
+	color: var(--highlight);
+}
+
+/* ============================
+   Modal de edição de personagem
+   ============================ */
+
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.72);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+	padding: 20px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+	background: var(--bg-panel);
+	border: 1px solid var(--border-strong);
+	border-radius: 10px;
+	width: 100%;
+	max-width: 520px;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 20px;
+	border-bottom: 1px solid var(--border);
+	flex-shrink: 0;
+}
+
+.modal-header h3 {
+	font-size: 1.1rem;
+	color: var(--accent-bright);
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	margin: 0;
+}
+
+.modal-close {
+	background: none;
+	border: none;
+	color: var(--ink-dim);
+	font-size: 1.5rem;
+	cursor: pointer;
+	line-height: 1;
+	padding: 0 4px;
+	transition: color 0.15s;
+}
+
+.modal-close:hover { color: var(--ink); }
+
+.modal-body {
+	padding: 18px 20px;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	flex: 1;
+}
+
+.modal-footer {
+	padding: 12px 20px;
+	border-top: 1px solid var(--border);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-shrink: 0;
+}
+
+.modal-footer-right {
+	display: flex;
+	gap: 8px;
+}
+
+.modal-delete-btn {
+	border-color: #6a2e2e;
+	color: #c07070;
+}
+
+.modal-delete-btn:hover {
+	background: rgba(106, 46, 46, 0.15);
+	border-color: #c07070;
+	color: #e09090;
+}
+
+.modal-field {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.modal-field-row {
+	display: grid;
+	grid-template-columns: 1fr 160px;
+	gap: 12px;
+	align-items: end;
+}
+
+.modal-label {
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--ink-dim);
+	display: block;
+}
+
+.modal-label-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.modal-select {
+	background: var(--bg-base);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	color: var(--ink);
+	font-family: inherit;
+	font-size: 0.88rem;
+	padding: 5px 8px;
+	width: 100%;
+	outline: none;
+	cursor: pointer;
+}
+
+.modal-select:focus { border-color: var(--accent-bright); }
+
+.modal-checkboxes {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 6px 0 2px;
+}
+
+.modal-checkbox-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.88rem;
+	color: var(--ink);
+	cursor: pointer;
+}
+
+.modal-checkbox-row input[type="checkbox"] {
+	accent-color: var(--highlight);
+	cursor: pointer;
+}
+
+/* Upload de ícone */
+
+.char-icon-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.char-icon-preview {
+	width: 64px;
+	height: 64px;
+	border: 1px dashed var(--border-strong);
+	border-radius: 6px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	background: var(--bg-panel-2);
+}
+
+.char-icon-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.char-icon-controls {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+/* Habilidades vampíricas */
+
+.vabilities-list {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	margin-top: 6px;
+}
+
+.vability-row {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+.vability-row .editor-text-input { flex: 1; }

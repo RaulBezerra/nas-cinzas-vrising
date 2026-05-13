@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   map-editor.js v2
+   map-editor.js v3
    ============================ */
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -29,6 +29,11 @@ let isDraggingPiece = false;
 let dragSourceKey = null;
 let dragTargetKey = null;
 
+// --- Undo / Redo ---
+const MAX_HISTORY = 50;
+let undoStack = [];
+let redoStack = [];
+
 // --- Geometria ---
 
 function hexMetrics(size) {
@@ -53,6 +58,42 @@ function hexPoints(cx, cy, size) {
 		pts.push([cx + size * Math.cos(angle), cy + size * Math.sin(angle)]);
 	}
 	return pts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
+}
+
+// --- Undo / Redo ---
+
+function snapshot() {
+	undoStack.push(JSON.stringify(state));
+	if (undoStack.length > MAX_HISTORY) undoStack.shift();
+	redoStack = [];
+}
+
+function syncStateToUI() {
+	document.getElementById("input-map-name").value = state.name;
+	document.getElementById("input-cols").value = state.cols;
+	document.getElementById("input-rows").value = state.rows;
+	selectedPieceKey = null;
+	isPainting = false;
+	isDraggingPiece = false;
+	updatePiecePanel();
+	renderGrid();
+	renderPieceList();
+}
+
+function undo() {
+	if (undoStack.length === 0) return;
+	redoStack.push(JSON.stringify(state));
+	state = JSON.parse(undoStack.pop());
+	syncStateToUI();
+	setStatus("Desfeito.");
+}
+
+function redo() {
+	if (redoStack.length === 0) return;
+	undoStack.push(JSON.stringify(state));
+	state = JSON.parse(redoStack.pop());
+	syncStateToUI();
+	setStatus("Refeito.");
 }
 
 // --- Estado dos hexes ---
@@ -204,6 +245,7 @@ function renderPieceAt(col, row, piece) {
 }
 
 function placePiece(col, row) {
+	snapshot();
 	const key = hexKey(col, row);
 	state.pieces[key] = { color: pieceColor, facing: pieceFacing, name: "" };
 	renderPieceAt(col, row, state.pieces[key]);
@@ -234,6 +276,7 @@ function selectPiece(key) {
 
 function deletePiece(key) {
 	if (!key || !state.pieces[key]) return;
+	snapshot();
 	delete state.pieces[key];
 	const svg = document.getElementById("editor-board");
 	const g = svg.querySelector(`.piece-group[data-piece-key="${key}"]`);
@@ -301,6 +344,7 @@ function endDrag() {
 	if (dragTargetKey && dragTargetKey !== dragSourceKey) {
 		const [tc, tr] = dragTargetKey.split(",").map(Number);
 		if (getHexType(tc, tr) !== "vazio" && !state.pieces[dragTargetKey]) {
+			snapshot();
 			const piece = state.pieces[dragSourceKey];
 			delete state.pieces[dragSourceKey];
 			state.pieces[dragTargetKey] = piece;
@@ -437,6 +481,7 @@ function setupPainting() {
 			e.preventDefault();
 			return;
 		}
+		snapshot();
 		isPainting = true;
 		paintHexAt(e.target);
 		e.preventDefault();
@@ -471,6 +516,7 @@ function setupPainting() {
 		e.preventDefault();
 		const pieceKey = getPieceKeyFromElement(e.target);
 		if (!pieceKey || !state.pieces[pieceKey]) return;
+		snapshot();
 		const piece = state.pieces[pieceKey];
 		piece.facing = (piece.facing + 1) % 6;
 		const [c, r] = pieceKey.split(",").map(Number);
@@ -568,6 +614,7 @@ function newMap() {
 }
 
 function generateGrid() {
+	snapshot();
 	const cols = Math.min(24, Math.max(3, parseInt(document.getElementById("input-cols").value) || 9));
 	const rows = Math.min(20, Math.max(3, parseInt(document.getElementById("input-rows").value) || 7));
 	state.cols = cols;
@@ -740,6 +787,19 @@ function init() {
 
 	document.getElementById("btn-delete-piece").addEventListener("click", () => {
 		if (selectedPieceKey) deletePiece(selectedPieceKey);
+	});
+
+	document.addEventListener("keydown", (e) => {
+		const tag = document.activeElement.tagName;
+		if (tag === "INPUT" || tag === "TEXTAREA") return;
+		if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+			e.preventDefault();
+			undo();
+		}
+		if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
+			e.preventDefault();
+			redo();
+		}
 	});
 
 	renderGrid();

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Personagens — Nas Cinzas V Rising</title>
-	<link rel="stylesheet" href="style.css?v=19">
+	<link rel="stylesheet" href="style.css?v=22">
 </head>
 <body>
 	<header>
@@ -14,16 +14,20 @@
 			<a href="weapons.html">Armas</a>
 			<a href="schools.html">Escolas</a>
 			<a href="characters.html" class="active">Personagens</a>
+			<a href="blood-types.html">Sangue</a>
 			<a href="map-editor.html">Mapas</a>
 		</nav>
 	</header>
 	<main>
 		<section class="library">
-			<h2 class="section-title">Biblioteca de Personagens</h2>
+			<div class="library-header">
+				<h2 class="section-title">Biblioteca de Personagens</h2>
+				<button id="new-char-btn" class="editor-btn editor-btn-primary">+ Novo Personagem</button>
+			</div>
 			<div id="characters-list" class="library-list compact"></div>
 		</section>
 	</main>
-	<script src="effects.js"></script>
-	<script src="characters.js"></script>
+	<script src="effects.js?v=11"></script>
+	<script src="characters.js?v=4"></script>
 </body>
 </html>

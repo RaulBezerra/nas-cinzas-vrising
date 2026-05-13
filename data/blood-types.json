@@ -1,0 +1,59 @@
+[
+	{
+		"id": "rogue",
+		"name": "Ladino",
+		"icon": "assets/icons/blood-types/rogue.png",
+		"passives": [
+			{ "description": "Primeiro ataque após usar o véu tem a rolagem máxima" },
+			{ "description": "Acertar um inimigo por trás dobra o dano" }
+		],
+		"vampirePower": {
+			"id": "rogue-shadow-step",
+			"name": "Passo das Sombras",
+			"icon": "assets/icons/abilities/rogue-shadow-step.png",
+			"effects": [{ "kind": "move", "value": 4 }]
+		}
+	},
+	{
+		"id": "brute",
+		"name": "Bruto",
+		"icon": "assets/icons/blood-types/brute.png",
+		"passives": [],
+		"vampirePower": null
+	},
+	{
+		"id": "warrior",
+		"name": "Guerreiro",
+		"icon": "assets/icons/blood-types/warrior.png",
+		"passives": [
+			{ "description": "Trocar de arma permite realizar um ataque com a arma nova, mas com rolagem mínima" }
+		],
+		"vampirePower": null
+	},
+	{
+		"id": "scholar",
+		"name": "Estudioso",
+		"icon": "assets/icons/blood-types/scholar.png",
+		"passives": [],
+		"vampirePower": {
+			"id": "scholar-echo",
+			"name": "Eco Arcano",
+			"icon": "assets/icons/abilities/scholar-echo.png",
+			"effects": [{ "kind": "text", "text": "Repete a última magia usada, exceto ultimate" }]
+		}
+	},
+	{
+		"id": "draculin",
+		"name": "Draculin",
+		"icon": "assets/icons/blood-types/draculin.png",
+		"passives": [],
+		"vampirePower": null
+	},
+	{
+		"id": "mutant",
+		"name": "Mutante",
+		"icon": "assets/icons/blood-types/mutant.png",
+		"passives": [],
+		"vampirePower": null
+	}
+]

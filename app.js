@@ -1,8 +1,8 @@
 /* ============================
    Nas Cinzas — V Rising
-   app.js v23
-   Monta a mão do jogador a partir dos JSONs. O render de efeitos é
-   compartilhado via effects.js (renderEffects global).
+   app.js v24
+   Monta a mão do jogador a partir dos JSONs / localStorage.
+   O render de efeitos é compartilhado via effects.js (renderEffects global).
    ============================ */
 
 // Linha 1 do grid — fixa pra todo personagem
@@ -20,7 +20,9 @@ const DEFAULT_WHIRLWIND_AREA = {
 	hits: ["n", "ne", "se", "s", "sw", "nw"],
 };
 
-console.log("app.js v23 loaded");
+const CHAR_STORAGE_KEY = "nas-cinzas-characters";
+
+console.log("app.js v24 loaded");
 
 const state = {
 	selected: new Set(),
@@ -31,11 +33,23 @@ const state = {
 // Carregamento ============================
 
 async function loadData() {
-	const [weapons, schools, characters] = await Promise.all([
+	const [weapons, schools] = await Promise.all([
 		fetch(`data/weapons.json?v=${DATA_VERSION}`).then((r) => r.json()),
 		fetch(`data/schools.json?v=${DATA_VERSION}`).then((r) => r.json()),
-		fetch(`data/characters.json?v=${DATA_VERSION}`).then((r) => r.json()),
 	]);
+
+	// Personagens vêm do localStorage; JSON é apenas a semente inicial
+	let characters;
+	try {
+		const raw = localStorage.getItem(CHAR_STORAGE_KEY);
+		characters = raw ? JSON.parse(raw) : null;
+	} catch { characters = null; }
+
+	if (!characters || !characters.length) {
+		characters = await fetch(`data/characters.json?v=${DATA_VERSION}`).then((r) => r.json());
+		localStorage.setItem(CHAR_STORAGE_KEY, JSON.stringify(characters));
+	}
+
 	return { weapons, schools, characters };
 }
 
@@ -48,9 +62,9 @@ function buildGrid(character, weapons, schools) {
 
 	const rowLabels = [
 		{ name: "Vampiro", note: "" },
-		{ name: "Arma", note: weapon.name, icon: weapon.icon },
-		{ name: "Escola Primária", note: primary.name, icon: primary.icon },
-		{ name: "Escola Secundária", note: secondary.name, icon: secondary.icon },
+		{ name: "Arma", note: weapon ? weapon.name : "—", icon: weapon ? weapon.icon : null },
+		{ name: "Escola Primária", note: primary ? primary.name : "—", icon: primary ? primary.icon : null },
+		{ name: "Escola Secundária", note: secondary ? secondary.name : "—", icon: secondary ? secondary.icon : null },
 	];
 
 	const rowSlots = [
@@ -76,13 +90,13 @@ function buildGrid(character, weapons, schools) {
 			if (r === 0) {
 				ab = VAMPIRE_ROW[c];
 			} else if (r === 1) {
-				ab = findAbility(weapon.abilities, slot);
+				ab = weapon ? findAbility(weapon.abilities, slot) : null;
 			} else if (r === 2) {
-				ab = findAbility(primary.abilities, slot);
+				ab = primary ? findAbility(primary.abilities, slot) : null;
 			} else {
 				ab = c === 0
-					? findAbility(primary.abilities, "ultimate")
-					: findAbility(secondary.abilities, slot);
+					? (primary ? findAbility(primary.abilities, "ultimate") : null)
+					: (secondary ? findAbility(secondary.abilities, slot) : null);
 			}
 
 			const isUltimate = r === 3 && c === 0;
@@ -230,7 +244,28 @@ function updateStatus() {
 
 (async function init() {
 	const { weapons, schools, characters } = await loadData();
-	const character = characters[0]; // por enquanto, primeiro personagem da lista
+
+	// Popula seletor de personagem
+	const charSelect = document.getElementById("char-select");
+	if (charSelect && characters.length) {
+		characters.forEach((c, i) => {
+			const opt = document.createElement("option");
+			opt.value = i;
+			opt.textContent = c.name;
+			charSelect.appendChild(opt);
+		});
+		charSelect.addEventListener("change", () => {
+			const char = characters[parseInt(charSelect.value)];
+			if (!char) return;
+			const built = buildGrid(char, weapons, schools);
+			state.rowLabels = built.rowLabels;
+			state.cards = built.cards;
+			state.selected.clear();
+			renderGrid();
+		});
+	}
+
+	const character = characters[0];
 	const { rowLabels, cards } = buildGrid(character, weapons, schools);
 	state.rowLabels = rowLabels;
 	state.cards = cards;

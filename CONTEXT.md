@@ -24,6 +24,7 @@ nas-cinzas-vrising/
 ├── weapons.html
 ├── schools.html
 ├── characters.html
+├── blood-types.html
 ├── map-editor.html
 ├── style.css
 ├── app.js
@@ -32,16 +33,19 @@ nas-cinzas-vrising/
 ├── weapons.js
 ├── schools.js
 ├── characters.js
+├── blood-types.js
 ├── map-editor.js
 ├── data/
 │   ├── weapons.json
 │   ├── schools.json
-│   └── characters.json
+│   ├── characters.json
+│   └── blood-types.json
 ├── assets/icons/
 │   ├── weapons/
 │   ├── schools/
 │   ├── abilities/
-│   └── characters/
+│   ├── characters/
+│   └── blood-types/
 ├── .gitignore
 ├── README.md
 └── CONTEXT.md
@@ -95,7 +99,22 @@ Cada personagem referencia:
 - `inventory`
 - `primarySchool`
 - `secondarySchool`
+- `bloodType`
 - `vampireAbilities`
+
+Personagens são persistidos no `localStorage` (`nas-cinzas-characters`). O JSON é apenas a semente inicial na primeira visita.
+
+### `data/blood-types.json`
+
+Array com 6 tipos de sangue: `rogue`, `brute`, `warrior`, `scholar`, `draculin`, `mutant`.
+
+Cada tipo tem:
+
+- `id`, `name` (PT), `icon`
+- `passives`: array de `{ description }` (máx 2)
+- `vampirePower`: `{ id, name, icon, effects }` ou `null`
+
+Estado atual: Ladino completo; Guerreiro com 1 passiva; Estudioso com poder vampírico; demais vazios.
 
 ## 6. Assets
 
@@ -110,18 +129,20 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 
 ## 7. Estado atual
 
-- `index.html` v15 — página principal com nav (inclui Mapas), mão de cartas e tabuleiro; carrega `style.css?v=19`.
-- `style.css` v19 — inclui todos os estilos anteriores + estilos do editor de mapas (sidebar, ferramentas, hex estados, lista de mapas).
-- `app.js` v23 — carrega JSONs, monta grid por personagem, usa `renderEffects()` compartilhado e preserva `id`/`slot`/`icon` das habilidades.
-- `board.js` v1 — renderiza tabuleiro hexagonal SVG.
-- `effects.js` v11 — render compartilhado de efeitos; suporta modificador, dano fixo, alcance, múltiplos ataques, área hex colorida e descrição em hover.
-- `map-editor.html` v1 / `map-editor.js` v1 — editor de mapas hexagonais; grid configurável, 3 tipos de hex (livre/soft/bloqueado), pintura por click e arrasto, salvar/carregar via localStorage, export/import JSON.
-- `weapons.html` v4 / `weapons.js` v3 — biblioteca de armas com dano base e cards 4×3.
-- `schools.html` v3 / `schools.js` v3 — biblioteca das 6 escolas com cards 4×3 e cores.
-- `characters.html` v2 / `characters.js` v2 — biblioteca de personagens com refs por id e placeholders de imagem.
-- `data/weapons.json` v9 — Espada e Machados; Redemoinho e Arremessar Machados usam áreas hex.
-- `data/schools.json` v5 — Caos e Ilusão detalhadas; demais escolas ainda provisórias.
-- `data/characters.json` v2 — personagem padrão com inventário `sword` + `axes`.
+- `index.html` v17 — seletor de personagem (`char-bar`) acima da mão; carrega `style.css?v=22` e `app.js?v=24`.
+- `style.css` v22 — inclui estilos anteriores + seletor de personagem no jogo + modal de edição de personagens + tipos de sangue.
+- `app.js` v24 — carrega personagens do localStorage (semente do JSON), popula seletor de personagem, reconstrói grid ao trocar; `buildGrid` null-safe.
+- `board.js` v2 — carrega mapas do localStorage, popula seletor, renderiza terreno e peças; grade padrão 7×5.
+- `effects.js` v11 — render compartilhado de efeitos.
+- `map-editor.html` v2 / `map-editor.js` v3 — editor completo com undo/redo e persistência.
+- `weapons.html` / `weapons.js` v3 — biblioteca de armas.
+- `schools.html` / `schools.js` v3 — biblioteca das 6 escolas.
+- `characters.html` v3 / `characters.js` v4 — biblioteca com editor completo: criar/editar/excluir personagens, upload de imagem (base64), tipo de sangue, arma equipada destacada no inventário.
+- `blood-types.html` / `blood-types.js` v2 — biblioteca dos 6 tipos de sangue com passivas e poder vampírico.
+- `data/weapons.json` v9 — Espada e Machados.
+- `data/schools.json` v5 — Caos e Ilusão detalhadas; demais provisórias.
+- `data/characters.json` v2 — personagem padrão (semente; dados reais ficam no localStorage).
+- `data/blood-types.json` v1 — 6 tipos; Ladino completo, Guerreiro e Estudioso parciais.
 
 ## 8. Convenções
 
@@ -137,9 +158,10 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 
 - **Fase 1 — Cartas** ✅ grid 4×3, seleção e visual das cartas.
 - **Fase 2 — Tabuleiro** 🟡 grid hexagonal renderizado; falta peão e interação carta↔tabuleiro.
-- **Fase 3 — Armas/Escolas** 🟡 bibliotecas, JSONs, dano base, cores e placeholders prontos; falta balanceamento e ícones reais.
-- **Fase 4 — Editor de Mapas** 🟡 editor funcional com grid configurável, tipos de hex e persistência; falta integração do mapa salvo no jogo.
-- **Fase 5 — Editor de cartas** ⚪ futuro.
+- **Fase 3 — Armas/Escolas/Personagens** 🟡 bibliotecas, JSONs, editor de personagens completo; falta balanceamento, ícones reais e demais escolas.
+- **Fase 4 — Editor de Mapas** ✅ editor completo com undo/redo e integração no jogo.
+- **Fase 5 — Tipos de Sangue** 🟡 página criada, 6 tipos, Ladino completo; demais a definir.
+- **Fase 6 — Editor de cartas** ⚪ futuro.
 
 ## 10. Histórico de commits
 
@@ -154,13 +176,13 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 9. `feat:` add school colors, damage badges and icon placeholders
 10. `fix:` render whirlwind area indicators in game cards
 11. `feat:` add axes and chaos illusion school abilities
-12. `feat:` add hex map editor with configurable grid, hex types and localStorage persistence
+12. `feat:` add hex map editor with terrain types, piece placement and management
+13. `feat:` add character editor, blood type library and active character selector
 
 ## 11. Próximos passos
 
-- Adicionar ícones `.png/.jpg` reais nas pastas de assets.
-- Definir as próximas escolas restantes.
-- Permitir escolher personagem ativo.
-- Integrar peão e movimentação no tabuleiro.
-- Começar interação carta↔hex no tabuleiro.
-- Carregar mapa salvo do editor na página de jogo.
+- Adicionar ícones `.png/.jpg` reais nas pastas de assets (incluindo `blood-types/`).
+- Definir passivas/poderes dos tipos de sangue restantes (Bruto, Draculin, Mutante; completar Guerreiro e Estudioso).
+- Definir as escolas de magia restantes (Blood, Frost, Unholy, Storm).
+- Interação carta↔hex no tabuleiro (mover peões com cartas).
+- Zoom no canvas do editor (scroll do mouse).
