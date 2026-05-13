@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Editor de Mapas — Nas Cinzas</title>
+	<link rel="stylesheet" href="style.css?v=20">
+</head>
+<body>
+	<header>
+		<h1>Nas Cinzas — V Rising</h1>
+		<p class="subtitle">Editor de Mapas</p>
+		<nav class="main-nav">
+			<a href="index.html">Jogo</a>
+			<a href="weapons.html">Armas</a>
+			<a href="schools.html">Escolas</a>
+			<a href="characters.html">Personagens</a>
+			<a href="map-editor.html" class="active">Mapas</a>
+		</nav>
+	</header>
+
+	<main class="editor-layout">
+		<aside class="editor-sidebar">
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Tamanho</h3>
+				<div class="editor-size-inputs">
+					<label class="editor-label">
+						<span>Colunas</span>
+						<input type="number" id="input-cols" class="editor-number-input" min="3" max="24" value="9">
+					</label>
+					<label class="editor-label">
+						<span>Linhas</span>
+						<input type="number" id="input-rows" class="editor-number-input" min="3" max="20" value="7">
+					</label>
+				</div>
+				<button class="editor-btn" id="btn-generate">Gerar grade</button>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Ferramenta</h3>
+				<div class="editor-tools">
+					<button class="tool-btn active" data-tool="free">
+						<span class="tool-swatch tool-swatch-free"></span>
+						Livre
+					</button>
+					<button class="tool-btn" data-tool="barreira">
+						<span class="tool-swatch tool-swatch-barreira"></span>
+						Barreira
+					</button>
+					<button class="tool-btn" data-tool="blocked">
+						<span class="tool-swatch tool-swatch-blocked"></span>
+						Bloqueado
+					</button>
+					<button class="tool-btn" data-tool="vazio">
+						<span class="tool-swatch tool-swatch-vazio"></span>
+						Apagar
+					</button>
+					<button class="tool-btn" data-tool="peca">
+						<span class="tool-swatch tool-swatch-peca"></span>
+						Peça
+					</button>
+				</div>
+				<ul class="editor-legend">
+					<li><span class="tool-swatch tool-swatch-free"></span> Livre — unidades e projéteis passam</li>
+					<li><span class="tool-swatch tool-swatch-barreira"></span> Barreira — projéteis passam, unidades não</li>
+					<li><span class="tool-swatch tool-swatch-blocked"></span> Bloqueado — nada passa (parede)</li>
+					<li><span class="tool-swatch tool-swatch-vazio"></span> Apagar — remove o hex do mapa</li>
+					<li><span class="tool-swatch tool-swatch-peca"></span> Peça — coloca unidade no hex</li>
+				</ul>
+				<label class="editor-checkbox-label">
+					<input type="checkbox" id="toggle-labels" checked>
+					Mostrar coordenadas
+				</label>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Mapa atual</h3>
+				<input type="text" id="input-map-name" class="editor-text-input" placeholder="Nome do mapa" maxlength="40">
+				<div class="editor-btn-row">
+					<button class="editor-btn editor-btn-primary" id="btn-save">Salvar</button>
+					<button class="editor-btn" id="btn-new">Novo</button>
+				</div>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Mapas salvos</h3>
+				<ul class="editor-map-list" id="map-list">
+					<!-- itens renderizados via JS -->
+				</ul>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Arquivo</h3>
+				<div class="editor-btn-row">
+					<button class="editor-btn" id="btn-export">Exportar JSON</button>
+					<label class="editor-btn editor-btn-file" id="btn-import-label">
+						Importar JSON
+						<input type="file" id="btn-import" accept=".json" style="display:none">
+					</label>
+				</div>
+			</section>
+
+		</aside>
+
+		<section class="editor-canvas-wrapper">
+			<span id="editor-status" class="editor-status"></span>
+			<div class="editor-canvas-scroll">
+				<svg id="editor-board" class="editor-board" xmlns="http://www.w3.org/2000/svg"></svg>
+			</div>
+		</section>
+		<aside class="editor-right-panel">
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Cor da peça</h3>
+				<div class="piece-color-grid">
+					<button class="piece-color-swatch active" data-color="#c04040" style="background:#c04040" title="Vermelho"></button>
+					<button class="piece-color-swatch" data-color="#c07030" style="background:#c07030" title="Laranja"></button>
+					<button class="piece-color-swatch" data-color="#b0a030" style="background:#b0a030" title="Amarelo"></button>
+					<button class="piece-color-swatch" data-color="#3a9050" style="background:#3a9050" title="Verde"></button>
+					<button class="piece-color-swatch" data-color="#309090" style="background:#309090" title="Ciano"></button>
+					<button class="piece-color-swatch" data-color="#3060c0" style="background:#3060c0" title="Azul"></button>
+					<button class="piece-color-swatch" data-color="#7040b0" style="background:#7040b0" title="Roxo"></button>
+					<button class="piece-color-swatch" data-color="#b04080" style="background:#b04080" title="Rosa"></button>
+					<button class="piece-color-swatch" data-color="#b0b0b0" style="background:#b0b0b0" title="Prata"></button>
+					<input type="color" id="piece-color-custom" class="piece-color-custom" value="#c04040" title="Cor personalizada">
+				</div>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Direção</h3>
+				<div class="facing-rose">
+					<button class="facing-btn" data-dir="4" title="Noroeste">↖</button>
+					<div></div>
+					<button class="facing-btn active" data-dir="5" title="Nordeste">↗</button>
+					<button class="facing-btn" data-dir="3" title="Oeste">←</button>
+					<div class="facing-center"></div>
+					<button class="facing-btn" data-dir="0" title="Leste">→</button>
+					<button class="facing-btn" data-dir="2" title="Sudoeste">↙</button>
+					<div></div>
+					<button class="facing-btn" data-dir="1" title="Sudeste">↘</button>
+				</div>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Selecionada</h3>
+				<span id="piece-selected-info" class="piece-selected-info">Nenhuma</span>
+				<input type="text" id="piece-name-input" class="editor-text-input" placeholder="Nome da peça" maxlength="30" disabled>
+				<button class="editor-btn" id="btn-delete-piece" disabled>Remover peça</button>
+			</section>
+
+			<section class="editor-section">
+				<h3 class="editor-section-title">Peças no mapa</h3>
+				<ul class="editor-map-list" id="piece-list">
+					<!-- renderizado via JS -->
+				</ul>
+			</section>
+
+		</aside>
+	</main>
+
+	<script src="map-editor.js?v=2"></script>
+</body>
+</html>

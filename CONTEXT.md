@@ -24,6 +24,7 @@ nas-cinzas-vrising/
 ├── weapons.html
 ├── schools.html
 ├── characters.html
+├── map-editor.html
 ├── style.css
 ├── app.js
 ├── board.js
@@ -31,6 +32,7 @@ nas-cinzas-vrising/
 ├── weapons.js
 ├── schools.js
 ├── characters.js
+├── map-editor.js
 ├── data/
 │   ├── weapons.json
 │   ├── schools.json
@@ -108,11 +110,12 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 
 ## 7. Estado atual
 
-- `index.html` v14 — página principal com nav, mão de cartas e tabuleiro; carrega `style.css?v=18`, `effects.js?v=11`, `app.js?v=23` e `board.js?v=1`.
-- `style.css` v18 — tema prata pálido, cards 240×180, cores por escola, imagens na mão/bibliotecas, área hex colorida, contador de ataques e tooltip por ícone `i`.
+- `index.html` v15 — página principal com nav (inclui Mapas), mão de cartas e tabuleiro; carrega `style.css?v=19`.
+- `style.css` v19 — inclui todos os estilos anteriores + estilos do editor de mapas (sidebar, ferramentas, hex estados, lista de mapas).
 - `app.js` v23 — carrega JSONs, monta grid por personagem, usa `renderEffects()` compartilhado e preserva `id`/`slot`/`icon` das habilidades.
 - `board.js` v1 — renderiza tabuleiro hexagonal SVG.
 - `effects.js` v11 — render compartilhado de efeitos; suporta modificador, dano fixo, alcance, múltiplos ataques, área hex colorida e descrição em hover.
+- `map-editor.html` v1 / `map-editor.js` v1 — editor de mapas hexagonais; grid configurável, 3 tipos de hex (livre/soft/bloqueado), pintura por click e arrasto, salvar/carregar via localStorage, export/import JSON.
 - `weapons.html` v4 / `weapons.js` v3 — biblioteca de armas com dano base e cards 4×3.
 - `schools.html` v3 / `schools.js` v3 — biblioteca das 6 escolas com cards 4×3 e cores.
 - `characters.html` v2 / `characters.js` v2 — biblioteca de personagens com refs por id e placeholders de imagem.
@@ -135,7 +138,8 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 - **Fase 1 — Cartas** ✅ grid 4×3, seleção e visual das cartas.
 - **Fase 2 — Tabuleiro** 🟡 grid hexagonal renderizado; falta peão e interação carta↔tabuleiro.
 - **Fase 3 — Armas/Escolas** 🟡 bibliotecas, JSONs, dano base, cores e placeholders prontos; falta balanceamento e ícones reais.
-- **Fase 4 — Editor de cartas** ⚪ futuro.
+- **Fase 4 — Editor de Mapas** 🟡 editor funcional com grid configurável, tipos de hex e persistência; falta integração do mapa salvo no jogo.
+- **Fase 5 — Editor de cartas** ⚪ futuro.
 
 ## 10. Histórico de commits
 
@@ -150,6 +154,7 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 9. `feat:` add school colors, damage badges and icon placeholders
 10. `fix:` render whirlwind area indicators in game cards
 11. `feat:` add axes and chaos illusion school abilities
+12. `feat:` add hex map editor with configurable grid, hex types and localStorage persistence
 
 ## 11. Próximos passos
 
@@ -158,3 +163,4 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 - Permitir escolher personagem ativo.
 - Integrar peão e movimentação no tabuleiro.
 - Começar interação carta↔hex no tabuleiro.
+- Carregar mapa salvo do editor na página de jogo.
