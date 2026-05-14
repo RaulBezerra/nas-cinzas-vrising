@@ -461,7 +461,7 @@ main {
 
 /* Variantes de tipo (bordas) — valem para .card e .ability-card */
 .card.vampire-row,    .ability-card.vampire-row    { border-color: var(--accent-bright); }
-.card.weapon,         .ability-card.weapon         { border-color: #8a7a5a; }
+.card.weapon,         .ability-card.weapon         { border-color: #5a6068; }
 .card.magic-primary,  .ability-card.magic-primary  { border-color: #6a3a8a; }
 .card.magic-secondary,.ability-card.magic-secondary{ border-color: #3a6a8a; }
 
@@ -1435,6 +1435,88 @@ main.editor-layout {
 
 .blood-vpower-card {
 	width: var(--ability-card-w);
+}
+
+/* ============================
+   Poderes vampíricos universais
+   ============================ */
+
+.vpower-intro {
+	font-size: 0.9rem;
+	color: var(--ink-dim);
+	font-style: italic;
+	margin-bottom: 1.5rem;
+}
+
+.vpower-section-title {
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--ink-dim);
+	margin: 2rem 0 1rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 1px solid var(--border);
+}
+
+.vpower-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.vpower-entry {
+	display: flex;
+	align-items: flex-start;
+	gap: 1.5rem;
+	background: var(--bg-panel);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 1.25rem;
+}
+
+.vpower-desc {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding-top: 4px;
+}
+
+.vpower-slot {
+	font-size: 0.65rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--ink-dim);
+	font-family: "Consolas", "Courier New", monospace;
+}
+
+.vpower-desc p {
+	font-size: 0.95rem;
+	color: var(--ink);
+	line-height: 1.5;
+}
+
+/* Separador de seção dentro do modal */
+.modal-section-sep {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 2px 0;
+}
+
+.modal-section-sep::before,
+.modal-section-sep::after {
+	content: "";
+	flex: 1;
+	border-top: 1px dashed var(--border);
+}
+
+/* Linha de efeito no editor de tipo de sangue */
+.effect-row {
+	display: grid;
+	grid-template-columns: 110px 1fr auto;
+	gap: 6px;
+	align-items: center;
 }
 
 .char-edit-btn {

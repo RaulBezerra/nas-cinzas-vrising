@@ -18,7 +18,9 @@
 		"id": "brute",
 		"name": "Bruto",
 		"icon": "assets/icons/blood-types/brute.png",
-		"passives": [],
+		"passives": [
+			{ "description": "Ao rolar o máximo num ataque corporal, recupere de vida o valor da rolagem" }
+		],
 		"vampirePower": null
 	},
 	{
@@ -26,7 +28,8 @@
 		"name": "Guerreiro",
 		"icon": "assets/icons/blood-types/warrior.png",
 		"passives": [
-			{ "description": "Trocar de arma permite realizar um ataque com a arma nova, mas com rolagem mínima" }
+			{ "description": "Trocar de arma permite realizar um ataque com a arma nova, mas com rolagem mínima" },
+			{ "description": "Pode ter +1 arma no inventário" }
 		],
 		"vampirePower": null
 	},
@@ -50,9 +53,17 @@
 		"vampirePower": null
 	},
 	{
+		"id": "creature",
+		"name": "Criatura",
+		"icon": "assets/icons/blood-types/creature.png",
+		"passives": [],
+		"vampirePower": null
+	},
+	{
 		"id": "mutant",
 		"name": "Mutante",
 		"icon": "assets/icons/blood-types/mutant.png",
+		"disabled": true,
 		"passives": [],
 		"vampirePower": null
 	}

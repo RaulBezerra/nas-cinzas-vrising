@@ -6,6 +6,7 @@
    ============================ */
 
 const CHAR_STORAGE_KEY = "nas-cinzas-characters";
+const BT_STORAGE_KEY = "nas-cinzas-blood-types";
 
 let allWeapons = [];
 let allSchools = [];
@@ -30,7 +31,7 @@ function saveToStorage() {
 // Carga inicial ============================
 
 async function loadAll() {
-	const [weapons, schools, bloodTypes, charJson] = await Promise.all([
+	const [weapons, schools, bloodTypesJson, charJson] = await Promise.all([
 		fetch("data/weapons.json").then((r) => r.json()),
 		fetch("data/schools.json").then((r) => r.json()),
 		fetch("data/blood-types.json").then((r) => r.json()),
@@ -38,7 +39,13 @@ async function loadAll() {
 	]);
 	allWeapons = weapons;
 	allSchools = schools;
-	allBloodTypes = bloodTypes;
+
+	// Tipos de sangue: localStorage tem prioridade sobre o JSON
+	try {
+		const rawBt = localStorage.getItem(BT_STORAGE_KEY);
+		allBloodTypes = rawBt ? JSON.parse(rawBt) : bloodTypesJson;
+		if (!rawBt) localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(bloodTypesJson));
+	} catch { allBloodTypes = bloodTypesJson; }
 
 	// localStorage tem prioridade; JSON é a semente se estiver vazio
 	const stored = loadFromStorage();
@@ -285,7 +292,7 @@ function populateSchoolOptions(selId, selectedId) {
 function populateBloodTypeOptions(selectedId) {
 	const sel = document.getElementById("modal-bloodtype");
 	sel.innerHTML = '<option value="">— nenhum —</option>';
-	allBloodTypes.forEach((b) => {
+	allBloodTypes.filter((b) => !b.disabled).forEach((b) => {
 		const opt = document.createElement("option");
 		opt.value = b.id;
 		opt.textContent = b.name;

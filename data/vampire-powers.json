@@ -1,0 +1,45 @@
+{
+	"rowCards": [
+		{
+			"id": "shadow-step",
+			"slot": "move",
+			"name": "Passos das Sombras",
+			"icon": "assets/icons/abilities/shadow-step.png",
+			"description": "O vampiro se desloca pelo campo de batalha.",
+			"effects": [{ "kind": "move", "value": 3 }]
+		},
+		{
+			"id": "swap-weapon",
+			"slot": "swap-weapon",
+			"name": "Trocar Arma",
+			"icon": "assets/icons/abilities/swap-weapon.png",
+			"description": "Troca a arma equipada por uma do inventário. A nova arma pode ser usada normalmente nas próximas rodadas.",
+			"effects": [{ "kind": "text", "text": "Troca de arma" }]
+		},
+		{
+			"id": "vampire-power",
+			"slot": "vampire-power",
+			"name": "Habilidade Vampírica",
+			"icon": "assets/icons/abilities/vampire-power.png",
+			"description": "Usa o poder vampírico do tipo de sangue ativo do personagem.",
+			"effects": [{ "kind": "text", "text": "Usa o poder do tipo de sangue ativo" }]
+		}
+	],
+	"abilities": [
+		{
+			"id": "metamorphosis",
+			"name": "Metamorfose",
+			"effects": [{ "kind": "text", "text": "Transforma-se num animal disponível" }],
+			"description": "Se transforma num animal a sua escolha (entre as opções disponíveis)."
+		},
+		{
+			"id": "bite",
+			"name": "Mordida",
+			"effects": [
+				{ "kind": "text", "text": "Executa inimigo com ≤4 vida a distância ≤2" },
+				{ "kind": "heal", "value": 2 }
+			],
+			"description": "Executa um inimigo com sangue a até 2 de distância que tenha até 4 pontos de vida. Recupera 2 pontos de sangue."
+		}
+	]
+}

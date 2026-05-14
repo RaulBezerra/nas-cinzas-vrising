@@ -138,11 +138,13 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 - `weapons.html` / `weapons.js` v3 — biblioteca de armas.
 - `schools.html` / `schools.js` v3 — biblioteca das 6 escolas.
 - `characters.html` v3 / `characters.js` v4 — biblioteca com editor completo: criar/editar/excluir personagens, upload de imagem (base64), tipo de sangue, arma equipada destacada no inventário.
-- `blood-types.html` / `blood-types.js` v2 — biblioteca dos 6 tipos de sangue com passivas e poder vampírico.
+- `blood-types.html` / `blood-types.js` v4 — biblioteca dos 7 tipos com editor; merge-on-load sincroniza novos registros e flag `disabled` sem sobreescrever edições do usuário.
+- `vampire-powers.html` / `vampire-powers.js` v2 — 3 cartas de ação em row (`.abilities-grid`), seção "Habilidades Especiais" abaixo com Metamorfose e Mordida.
 - `data/weapons.json` v9 — Espada e Machados.
 - `data/schools.json` v5 — Caos e Ilusão detalhadas; demais provisórias.
 - `data/characters.json` v2 — personagem padrão (semente; dados reais ficam no localStorage).
-- `data/blood-types.json` v1 — 6 tipos; Ladino completo, Guerreiro e Estudioso parciais.
+- `data/blood-types.json` — 7 tipos (Criatura adicionada; Mutante com `"disabled":true`); Ladino completo, Guerreiro e Estudioso parciais.
+- `data/vampire-powers.json` — estrutura `{ rowCards, abilities }`; abilities tem Metamorfose e Mordida.
 
 ## 8. Convenções
 
@@ -178,11 +180,12 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 11. `feat:` add axes and chaos illusion school abilities
 12. `feat:` add hex map editor with terrain types, piece placement and management
 13. `feat:` add character editor, blood type library and active character selector
+14. `feat:` add vampire powers page with row cards and special abilities (Metamorfose, Mordida)
 
 ## 11. Próximos passos
 
 - Adicionar ícones `.png/.jpg` reais nas pastas de assets (incluindo `blood-types/`).
-- Definir passivas/poderes dos tipos de sangue restantes (Bruto, Draculin, Mutante; completar Guerreiro e Estudioso).
+- Definir passivas/poderes dos tipos de sangue restantes (Bruto, Draculin; completar Guerreiro e Estudioso).
 - Definir as escolas de magia restantes (Blood, Frost, Unholy, Storm).
 - Interação carta↔hex no tabuleiro (mover peões com cartas).
 - Zoom no canvas do editor (scroll do mouse).
