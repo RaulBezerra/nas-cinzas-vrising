@@ -173,21 +173,39 @@
 				"id": "veil-of-storm",
 				"name": "Véu Tempestuoso",
 				"icon": "assets/icons/abilities/veil-of-storm.png",
-				"effects": [{ "kind": "text", "text": "Véu" }]
+				"effects": [
+					{ "kind": "move", "value": 2 },
+					{ "kind": "text", "text": "+2 no próximo ataque" }
+				]
 			},
 			{
 				"slot": "magic-1",
-				"id": "storm-bolt",
-				"name": "Raio Imediato",
-				"icon": "assets/icons/abilities/storm-bolt.png",
-				"effects": [{ "kind": "attack", "value": 2, "ranged": true }]
+				"id": "storm-polarity-shift",
+				"name": "Mudança de Polaridade",
+				"icon": "assets/icons/abilities/storm-polarity-shift.png",
+				"effects": [
+					{ "kind": "range", "value": 3 },
+					{
+						"kind": "attack",
+						"damage": "2+1d6",
+						"ranged": true,
+						"description": "Se o dado for acima de 3, você e o alvo trocam de lugar."
+					}
+				]
 			},
 			{
 				"slot": "magic-2",
-				"id": "storm-shock",
-				"name": "Toque Eletrizante",
-				"icon": "assets/icons/abilities/storm-shock.png",
-				"effects": [{ "kind": "attack", "value": 2 }]
+				"id": "storm-lightning-curtain",
+				"name": "Cortina de Raios",
+				"icon": "assets/icons/abilities/storm-lightning-curtain.png",
+				"effects": [
+					{ "kind": "range", "value": 3 },
+					{
+						"kind": "text",
+						"text": "Cortina em 3 casas",
+						"description": "Cria uma cortina elétrica em 3 casas em linha reta. Bloqueia projéteis inimigos até o próximo turno. Aliados que cruzam a cortina ganham +1 de movimento neste turno."
+					}
+				]
 			},
 			{
 				"slot": "ultimate",
@@ -231,8 +249,7 @@
 						"ranged": true,
 						"description": "Alcance 3. Causa 6 de dano e puxa 1 alvo para o centro.",
 						"area": {
-							"self": true,
-							"hits": ["n", "ne", "se", "s", "sw", "nw"]
+							"hits": ["n", "ne", "se", "s", "sw", "nw", "self"]
 						}
 					}
 				]

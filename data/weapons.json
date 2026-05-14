@@ -4,12 +4,13 @@
 		"name": "Espada",
 		"icon": "assets/icons/weapons/sword.png",
 		"baseDamage": "6+1d6",
+		"baseRange": 1,
 		"abilities": [
 			{
 				"slot": "move-attack",
-				"id": "sword-charge",
+				"id": "sword-move-attack",
 				"name": "Mover e Atacar",
-				"icon": "assets/icons/abilities/sword-charge.png",
+				"icon": "assets/icons/abilities/sword-move-attack.png",
 				"effects": [
 					{ "kind": "move", "value": 2 },
 					{ "kind": "attack", "value": -2 }
@@ -17,16 +18,16 @@
 			},
 			{
 				"slot": "basic-attack",
-				"id": "sword-slash",
+				"id": "sword-attack",
 				"name": "Ataque",
-				"icon": "assets/icons/abilities/sword-slash.png",
+				"icon": "assets/icons/abilities/sword-attack.png",
 				"effects": [{ "kind": "attack", "value": 0 }]
 			},
 			{
 				"slot": "special-attack",
-				"id": "sword-whirlwind",
+				"id": "sword-special",
 				"name": "Redemoinho",
-				"icon": "assets/icons/abilities/sword-whirlwind.png",
+				"icon": "assets/icons/abilities/sword-special.png",
 				"effects": [
 					{
 						"kind": "attack",
@@ -50,10 +51,190 @@
 		]
 	},
 	{
+		"id": "greatsword",
+		"name": "Espadão",
+		"icon": "assets/icons/weapons/greatsword.png",
+		"baseDamage": "8+1d6",
+		"baseRange": 1,
+		"abilities": [
+			{
+				"slot": "move-attack",
+				"id": "greatsword-move-attack",
+				"name": "Mover e Atacar",
+				"icon": "assets/icons/abilities/greatsword-move-attack.png",
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{ "kind": "attack", "value": -2 }
+				]
+			},
+			{
+				"slot": "basic-attack",
+				"id": "greatsword-attack",
+				"name": "Ataque",
+				"icon": "assets/icons/abilities/greatsword-attack.png",
+				"effects": [
+					{
+						"kind": "attack",
+						"value": 0,
+						"area": {
+							"self": true,
+							"hits": ["n", "ne"]
+						}
+					}
+				]
+			},
+			{
+				"slot": "special-attack",
+				"id": "greatsword-special",
+				"name": "Investida",
+				"icon": "assets/icons/abilities/greatsword-special.png",
+				"effects": [
+					{ "kind": "move", "value": 2 },
+					{ "kind": "attack", "value": 2 },
+					{
+						"kind": "text",
+						"text": "Movimento obrigatório",
+						"description": "Avança exatamente 2 casas em linha reta. Ao final, realiza um ataque com +2 de dano 2 duas casas também em linha reta."
+					}
+				]
+			}
+		]
+	},
+	{
+		"id": "slasher",
+		"name": "Retalhadora",
+		"icon": "assets/icons/weapons/slasher.png",
+		"baseDamage": "2+1d6",
+		"baseRange": 1,
+		"abilities": [
+			{
+				"slot": "move-attack",
+				"id": "slasher-move-attack",
+				"name": "Mover e Atacar",
+				"icon": "assets/icons/abilities/slasher-move-attack.png",
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{ "kind": "attack", "value": 1 },
+					{ "kind": "move", "value": 1 },
+					{
+						"kind": "text",
+						"text": "Ordem livre"
+					}
+				]
+			},
+			{
+				"slot": "basic-attack",
+				"id": "slasher-attack",
+				"name": "Ataque Duplo",
+				"icon": "assets/icons/abilities/slasher-attack.png",
+				"effects": [
+					{ "kind": "attack", "value": -1 },
+					{ "kind": "attack", "value": -1 }
+				]
+			},
+			{
+				"slot": "special-attack",
+				"id": "slasher-special",
+				"name": "Avanço Cortante",
+				"icon": "assets/icons/abilities/slasher-special.png",
+				"effects": [
+					{ "kind": "move", "value": 2 },
+					{
+						"kind": "attack",
+						"value": -1,
+						"description": "Se o resultado do dado for na metade superior do seu tipo (ex.: 4–6 num d6), o alvo fica imobilizado até o próximo turno dele."
+					}
+				]
+			}
+		]
+	},
+	{
+		"id": "longbow",
+		"name": "Arco",
+		"icon": "assets/icons/weapons/longbow.png",
+		"baseDamage": "6+1d4",
+		"baseRange": 5,
+		"abilities": [
+			{
+				"slot": "move-attack",
+				"id": "longbow-move-attack",
+				"name": "Mover e Atirar",
+				"icon": "assets/icons/abilities/longbow-move-attack.png",
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{ "kind": "attack", "value": -2, "ranged": true }
+				]
+			},
+			{
+				"slot": "basic-attack",
+				"id": "longbow-attack",
+				"name": "Disparo",
+				"icon": "assets/icons/abilities/longbow-attack.png",
+				"effects": [{ "kind": "attack", "value": 0, "ranged": true }]
+			},
+			{
+				"slot": "special-attack",
+				"id": "longbow-special",
+				"name": "Saraivada",
+				"icon": "assets/icons/abilities/longbow-special.png",
+				"effects": [
+					{ "kind": "range", "value": 4 },
+					{
+						"kind": "attack",
+						"value": -2,
+						"ranged": true,
+						"description": "Atinge até 3 inimigos que estejam adjacentes entre si, dentro do alcance 4."
+					}
+				]
+			}
+		]
+	},
+	{
+		"id": "spear",
+		"name": "Lança",
+		"icon": "assets/icons/weapons/spear.png",
+		"baseDamage": "4+1d6",
+		"baseRange": 2,
+		"abilities": [
+			{
+				"slot": "move-attack",
+				"id": "spear-move-attack",
+				"name": "Mover e Atacar",
+				"icon": "assets/icons/abilities/spear-move-attack.png",
+				"effects": [
+					{ "kind": "move", "value": 1 },
+					{ "kind": "attack", "value": -1 }
+				]
+			},
+			{
+				"slot": "basic-attack",
+				"id": "spear-attack",
+				"name": "Ataque",
+				"icon": "assets/icons/abilities/spear-attack.png",
+				"effects": [{ "kind": "attack", "value": 0 }]
+			},
+			{
+				"slot": "special-attack",
+				"id": "spear-special",
+				"name": "Rajada de Golpes",
+				"icon": "assets/icons/abilities/spear-special.png",
+				"effects": [
+					{
+						"kind": "attack",
+						"value": -2,
+						"count": 3,
+						"description": "3 ataques -2 num alvo adjacente. Após os três golpes, pode empurrar o alvo 1 casa na direção oposta (opcional)."
+					}
+				]
+			}
+		]
+	},
+	{
 		"id": "axes",
 		"name": "Machados",
 		"icon": "assets/icons/weapons/axes.png",
 		"baseDamage": "6+1d4",
+		"baseRange": 1,
 		"abilities": [
 			{
 				"slot": "move-attack",
@@ -74,9 +255,9 @@
 			},
 			{
 				"slot": "special-attack",
-				"id": "axes-throw",
+				"id": "axes-special",
 				"name": "Arremessar Machados",
-				"icon": "assets/icons/abilities/axes-throw.png",
+				"icon": "assets/icons/abilities/axes-special.png",
 				"effects": [
 					{
 						"kind": "attack",

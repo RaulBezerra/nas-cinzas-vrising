@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   weapons.js v3
+   weapons.js v4
    Renderiza biblioteca de armas com <img> placeholders e --n na grade.
    ============================ */
 
@@ -30,12 +30,15 @@ function renderWeapon(weapon) {
 	const damage = weapon.baseDamage
 		? `<span class="weapon-damage">${weapon.baseDamage}</span>`
 		: "";
+	const range = weapon.baseRange !== undefined
+		? `<span class="weapon-range">Alcance ${weapon.baseRange}</span>`
+		: "";
 	return `
 		<article class="library-card">
 			<header class="library-card-header">
 				<div class="library-card-icon">${iconImg(weapon.icon)}</div>
 				<h3>${weapon.name}</h3>
-				${damage}
+				${damage}${range}
 				<code class="library-card-id">${weapon.id}</code>
 			</header>
 			<div class="abilities-grid" style="--n: ${weapon.abilities.length}">

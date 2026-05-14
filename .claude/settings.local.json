@@ -3,7 +3,10 @@
     "allow": [
       "WebFetch(domain:vrising.fandom.com)",
       "Bash(python -c ' *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(sed -i 's/effects\\\\.js?v=11/effects.js?v=12/g' index.html weapons.html schools.html characters.html blood-types.html vampire-powers.html)",
+      "Bash(sed -i 's/src=\"weapons\\\\.js\"/src=\"weapons.js?v=4\"/' weapons.html)",
+      "Bash(git -C \"c:\\\\Users\\\\Windows\\\\OneDrive\\\\V Rising\\\\nas-cinzas-vrising\" diff --stat)"
     ]
   }
 }

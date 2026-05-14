@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   effects.js v11
+   effects.js v13
    Biblioteca de ícones SVG, padrões de área em hex e funções de render.
    Carregar antes de qualquer página que mostre cartas/habilidades.
    ============================ */
@@ -45,7 +45,7 @@ function renderAttackValue(effect) {
 }
 
 function renderAttackEffect(effect) {
-	const iconKey = effect.ranged ? "target" : "sword";
+	const iconKey = "sword";
 	const value = renderAttackValue(effect);
 	const countHtml = effect.count ? `<span class="effect-count">${effect.count}×</span>` : "";
 	const valueHtml = value ? `<span class="effect-value">${value}</span>` : "";
@@ -103,7 +103,9 @@ function renderEffects(effects) {
 	}
 
 	const description = effects.find((effect) => effect.description)?.description;
-	const infoHtml = renderInfoIndicator(description);
+	const descHtml = description
+		? `<p class="effect-description">${description}</p>`
+		: "";
 	const html = [];
 
 	for (let i = 0; i < effects.length; i++) {
@@ -117,5 +119,5 @@ function renderEffects(effects) {
 			html.push(renderEffect(effect));
 		}
 	}
-	return `${infoHtml}${html.join("")}`;
+	return `${html.join("")}${descHtml}`;
 }
