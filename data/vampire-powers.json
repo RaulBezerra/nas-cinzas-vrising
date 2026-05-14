@@ -1,10 +1,10 @@
 {
 	"rowCards": [
 		{
-			"id": "shadow-step",
+			"id": "move",
 			"slot": "move",
-			"name": "Passos das Sombras",
-			"icon": "assets/icons/abilities/shadow-step.png",
+			"name": "Mover",
+			"icon": "assets/icons/abilities/move.png",
 			"description": "O vampiro se desloca pelo campo de batalha.",
 			"effects": [{ "kind": "move", "value": 3 }]
 		},
@@ -29,15 +29,23 @@
 		{
 			"id": "metamorphosis",
 			"name": "Metamorfose",
+			"icon": "assets/icons/abilities/metamorphosis.png",
 			"effects": [{ "kind": "text", "text": "Transforma-se num animal disponível" }],
-			"description": "Se transforma num animal a sua escolha (entre as opções disponíveis)."
+			"description": "Custa 3 de sangue. Não pode fazer mais nada até o fim do turno. Se transforma num animal a sua escolha (entre as opções disponíveis)."
+		},
+		{
+			"id": "bloodmend",
+			"name": "Regeneração Sanguínea",
+			"icon": "assets/icons/abilities/bloodmend.png",
+			"effects": [{ "kind": "text", "text": "Recupera pontos de sangue" }],
+			"description": "Não pode fazer mais nada no resto do turno. Se não receber dano até voltar ao seu turno pode gastar X pontos de sangue e recupera 2Xd6 pontos de vida."
 		},
 		{
 			"id": "bite",
 			"name": "Mordida",
+			"icon": "assets/icons/abilities/bite.png",
 			"effects": [
-				{ "kind": "text", "text": "Executa inimigo com ≤4 vida a distância ≤2" },
-				{ "kind": "heal", "value": 2 }
+				{ "kind": "text", "text": "Executa inimigo com ≤4 vida a distância ≤2" }
 			],
 			"description": "Executa um inimigo com sangue a até 2 de distância que tenha até 4 pontos de vida. Recupera 2 pontos de sangue."
 		}

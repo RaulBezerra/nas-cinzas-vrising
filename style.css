@@ -1352,6 +1352,14 @@ main.editor-layout {
 	font-style: italic;
 }
 
+/* Dica descritiva no topo da página de personagens */
+.char-page-hint {
+	font-size: 0.85rem;
+	color: var(--ink-dim);
+	font-style: italic;
+	margin-bottom: 1.5rem;
+}
+
 /* Tipo de sangue no header do card */
 .char-header-meta {
 	display: flex;
@@ -1371,6 +1379,35 @@ main.editor-layout {
 	font-size: 0.88rem;
 	color: var(--ink);
 }
+
+/* Stats de vida e sangue na ficha */
+.char-stats-row {
+	display: flex;
+	gap: 1.25rem;
+	margin-top: 8px;
+}
+
+.char-stat {
+	display: flex;
+	align-items: baseline;
+	gap: 4px;
+}
+
+.char-stat-label {
+	font-size: 0.65rem;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	color: var(--ink-dim);
+}
+
+.char-stat-value {
+	font-size: 1.05rem;
+	font-weight: 600;
+	font-family: "Consolas", "Courier New", monospace;
+}
+
+.char-stat-vida .char-stat-value  { color: #5aaa6a; }
+.char-stat-sangue .char-stat-value { color: #c44a5a; }
 
 /* Arma equipada destacada no inventário */
 .char-row-equipped {
@@ -1494,6 +1531,57 @@ main.editor-layout {
 	font-size: 0.95rem;
 	color: var(--ink);
 	line-height: 1.5;
+}
+
+/* Lista simples de habilidades vampíricas */
+.vability-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+	padding: 0.875rem 1rem;
+	background: var(--bg-panel);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+}
+
+.vability-item + .vability-item {
+	margin-top: 0.625rem;
+}
+
+.vability-item-icon {
+	width: 48px;
+	height: 48px;
+	flex-shrink: 0;
+	border: 1px dashed var(--border-strong);
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.vability-item-icon img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.vability-item-body {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding-top: 2px;
+}
+
+.vability-item-name {
+	font-size: 0.95rem;
+	color: var(--accent-bright);
+}
+
+.vability-item-desc {
+	font-size: 0.88rem;
+	color: var(--ink-dim);
+	line-height: 1.55;
 }
 
 /* Separador de seção dentro do modal */

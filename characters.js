@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   characters.js v4
+   characters.js v5
    Biblioteca de personagens com editor completo.
    Personagens salvos no localStorage; JSON é apenas a semente inicial.
    ============================ */
@@ -98,8 +98,18 @@ function renderCharacter(character) {
 					</button>
 				</div>
 				<div class="char-header-meta">
-					<span class="char-header-meta-label">Sangue</span>
+					<span class="char-header-meta-label">Tipo de Sangue</span>
 					<span class="char-header-meta-value">${bloodType ? bloodType.name : "—"}</span>
+				</div>
+				<div class="char-stats-row">
+					<div class="char-stat char-stat-vida">
+						<span class="char-stat-label">Vida</span>
+						<span class="char-stat-value">${character.hp ?? 60}</span>
+					</div>
+					<div class="char-stat char-stat-sangue">
+						<span class="char-stat-label">Sangue</span>
+						<span class="char-stat-value">${character.blood ?? 10}</span>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -176,6 +186,16 @@ function buildModal() {
 					<label class="modal-field">
 						<span class="modal-label">ID</span>
 						<input type="text" id="modal-id" class="editor-text-input" placeholder="id">
+					</label>
+				</div>
+				<div class="modal-field-row">
+					<label class="modal-field">
+						<span class="modal-label">Vida (máx.)</span>
+						<input type="number" id="modal-hp" class="editor-text-input" min="1" max="999" value="60">
+					</label>
+					<label class="modal-field">
+						<span class="modal-label">Sangue (máx.)</span>
+						<input type="number" id="modal-blood" class="editor-text-input" min="0" max="99" value="10">
 					</label>
 				</div>
 				<label class="modal-field">
@@ -347,6 +367,8 @@ function openModal(character) {
 	idInput.style.color = character ? "var(--ink-dim)" : "";
 
 	document.getElementById("modal-name").value = character ? character.name : "";
+	document.getElementById("modal-hp").value = character ? (character.hp ?? 60) : 60;
+	document.getElementById("modal-blood").value = character ? (character.blood ?? 10) : 10;
 
 	currentIconSrc = character ? (character.icon || null) : null;
 	updateIconPreview(currentIconSrc);
@@ -400,6 +422,8 @@ function handleSave() {
 	const primarySchool = document.getElementById("modal-primary").value || null;
 	const secondarySchool = document.getElementById("modal-secondary").value || null;
 	const bloodType = document.getElementById("modal-bloodtype").value || null;
+	const hp = parseInt(document.getElementById("modal-hp").value, 10) || 60;
+	const blood = parseInt(document.getElementById("modal-blood").value, 10) || 10;
 
 	const vampireAbilities = Array.from(
 		document.querySelectorAll("#modal-vabilities input")
@@ -414,6 +438,8 @@ function handleSave() {
 		primarySchool,
 		secondarySchool,
 		bloodType,
+		hp,
+		blood,
 		vampireAbilities,
 	};
 

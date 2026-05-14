@@ -1,6 +1,6 @@
 /* ============================
    Nas Cinzas — V Rising
-   vampire-powers.js v2
+   vampire-powers.js v3
    Renderiza os poderes vampíricos universais.
    ============================ */
 
@@ -24,17 +24,12 @@ function renderRowCard(power) {
 
 function renderAbilityEntry(ability) {
 	const entry = document.createElement("div");
-	entry.className = "vpower-entry";
+	entry.className = "vability-item";
 	entry.innerHTML = `
-		<article class="ability-card vampire-row">
-			<div class="card-top">
-				<div class="card-img-placeholder">${iconImg(ability.icon)}</div>
-				<div class="card-name">${ability.name}</div>
-			</div>
-			<div class="card-effects">${renderEffects(ability.effects)}</div>
-		</article>
-		<div class="vpower-desc">
-			<p>${ability.description}</p>
+		<div class="vability-item-icon">${iconImg(ability.icon)}</div>
+		<div class="vability-item-body">
+			<strong class="vability-item-name">${ability.name}</strong>
+			<p class="vability-item-desc">${ability.description}</p>
 		</div>
 	`;
 	return entry;

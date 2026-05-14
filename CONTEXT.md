@@ -25,6 +25,7 @@ nas-cinzas-vrising/
 ├── schools.html
 ├── characters.html
 ├── blood-types.html
+├── vampire-powers.html
 ├── map-editor.html
 ├── style.css
 ├── app.js
@@ -34,16 +35,18 @@ nas-cinzas-vrising/
 ├── schools.js
 ├── characters.js
 ├── blood-types.js
+├── vampire-powers.js
 ├── map-editor.js
 ├── data/
 │   ├── weapons.json
 │   ├── schools.json
 │   ├── characters.json
-│   └── blood-types.json
+│   ├── blood-types.json
+│   └── vampire-powers.json
 ├── assets/icons/
 │   ├── weapons/
 │   ├── schools/
-│   ├── abilities/
+│   ├── abilities/        ← ícones de habilidades (row cards + habilidades vampíricas)
 │   ├── characters/
 │   └── blood-types/
 ├── .gitignore
@@ -95,14 +98,13 @@ Cada escola tem 4 habilidades: `veil`, `magic-1`, `magic-2`, `ultimate`.
 
 Cada personagem referencia:
 
-- `equippedWeapon`
-- `inventory`
-- `primarySchool`
-- `secondarySchool`
+- `equippedWeapon`, `inventory`
+- `primarySchool`, `secondarySchool`
 - `bloodType`
+- `hp` (padrão 60), `blood` (padrão 10)
 - `vampireAbilities`
 
-Personagens são persistidos no `localStorage` (`nas-cinzas-characters`). O JSON é apenas a semente inicial na primeira visita.
+Personagens são persistidos no `localStorage` (`nas-cinzas-characters`). O JSON é apenas a semente inicial na primeira visita. O render usa `?? 60` / `?? 10` como fallback para personagens criados antes dos campos hp/blood.
 
 ### `data/blood-types.json`
 
@@ -129,22 +131,22 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 
 ## 7. Estado atual
 
-- `index.html` v17 — seletor de personagem (`char-bar`) acima da mão; carrega `style.css?v=22` e `app.js?v=24`.
-- `style.css` v22 — inclui estilos anteriores + seletor de personagem no jogo + modal de edição de personagens + tipos de sangue.
-- `app.js` v24 — carrega personagens do localStorage (semente do JSON), popula seletor de personagem, reconstrói grid ao trocar; `buildGrid` null-safe.
+- `index.html` v17 — seletor de personagem (`char-bar`) acima da mão; `style.css?v=22`, `app.js?v=24`.
+- `style.css` v23 — inclui estilos anteriores + stats de vida/sangue no card + lista simples de habilidades vampíricas (`.vability-item`).
+- `app.js` v24 — carrega personagens do localStorage, popula seletor, reconstrói grid ao trocar; `buildGrid` null-safe.
 - `board.js` v2 — carrega mapas do localStorage, popula seletor, renderiza terreno e peças; grade padrão 7×5.
 - `effects.js` v11 — render compartilhado de efeitos.
-- `map-editor.html` v2 / `map-editor.js` v3 — editor completo com undo/redo e persistência.
+- `map-editor.html` / `map-editor.js` v3 — editor completo com undo/redo e persistência.
 - `weapons.html` / `weapons.js` v3 — biblioteca de armas.
 - `schools.html` / `schools.js` v3 — biblioteca das 6 escolas.
-- `characters.html` v3 / `characters.js` v4 — biblioteca com editor completo: criar/editar/excluir personagens, upload de imagem (base64), tipo de sangue, arma equipada destacada no inventário.
-- `blood-types.html` / `blood-types.js` v4 — biblioteca dos 7 tipos com editor; merge-on-load sincroniza novos registros e flag `disabled` sem sobreescrever edições do usuário.
-- `vampire-powers.html` / `vampire-powers.js` v2 — 3 cartas de ação em row (`.abilities-grid`), seção "Habilidades Especiais" abaixo com Metamorfose e Mordida.
+- `characters.html` v4 / `characters.js` v5 — editor completo; campos `hp`/`blood` na ficha e no modal; fallback `?? 60`/`?? 10` para personagens antigos; dica explicativa do sistema no topo da página.
+- `blood-types.html` / `blood-types.js` v4 — editor completo; merge-on-load sincroniza novos registros e flag `disabled` sem sobrescrever edições do usuário.
+- `vampire-powers.html` / `vampire-powers.js` v3 — 3 cartas de ação em `.abilities-grid`; habilidades especiais como lista simples (ícone 48×48 + nome + descrição).
 - `data/weapons.json` v9 — Espada e Machados.
 - `data/schools.json` v5 — Caos e Ilusão detalhadas; demais provisórias.
-- `data/characters.json` v2 — personagem padrão (semente; dados reais ficam no localStorage).
-- `data/blood-types.json` — 7 tipos (Criatura adicionada; Mutante com `"disabled":true`); Ladino completo, Guerreiro e Estudioso parciais.
-- `data/vampire-powers.json` — estrutura `{ rowCards, abilities }`; abilities tem Metamorfose e Mordida.
+- `data/characters.json` — personagem padrão com `hp:60`, `blood:10` (semente; dados reais no localStorage).
+- `data/blood-types.json` — 7 tipos (Criatura ativa; Mutante com `"disabled":true`); Ladino completo, Guerreiro e Estudioso parciais.
+- `data/vampire-powers.json` — `{ rowCards: [Mover, Trocar Arma, Habilidade Vampírica], abilities: [Metamorfose, Regeneração Sanguínea, Mordida] }`.
 
 ## 8. Convenções
 
@@ -180,11 +182,12 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 11. `feat:` add axes and chaos illusion school abilities
 12. `feat:` add hex map editor with terrain types, piece placement and management
 13. `feat:` add character editor, blood type library and active character selector
-14. `feat:` add vampire powers page with row cards and special abilities (Metamorfose, Mordida)
+14. `feat:` add vampire powers page, hp/blood stats, fix blood types stale cache
 
 ## 11. Próximos passos
 
-- Adicionar ícones `.png/.jpg` reais nas pastas de assets (incluindo `blood-types/`).
+- Adicionar ícones `.png` reais em `assets/icons/abilities/` (metamorphosis, bloodmend, bite, move, swap-weapon, vampire-power).
+- Adicionar ícones em `assets/icons/blood-types/`.
 - Definir passivas/poderes dos tipos de sangue restantes (Bruto, Draculin; completar Guerreiro e Estudioso).
 - Definir as escolas de magia restantes (Blood, Frost, Unholy, Storm).
 - Interação carta↔hex no tabuleiro (mover peões com cartas).
