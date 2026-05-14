@@ -139,14 +139,16 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 - `map-editor.html` / `map-editor.js` v3 — editor completo com undo/redo e persistência.
 - `weapons.html` / `weapons.js` v3 — biblioteca de armas.
 - `schools.html` / `schools.js` v3 — biblioteca das 6 escolas.
-- `characters.html` v4 / `characters.js` v5 — editor completo; campos `hp`/`blood` na ficha e no modal; fallback `?? 60`/`?? 10` para personagens antigos; dica explicativa do sistema no topo da página.
-- `blood-types.html` / `blood-types.js` v4 — editor completo; merge-on-load sincroniza novos registros e flag `disabled` sem sobrescrever edições do usuário.
+- `characters.html` v4 / `characters.js` v5 — editor completo; campos `hp` (padrão 60) e `blood` (padrão 10) na ficha e no modal; dica explicativa no topo da página.
+- `blood-types.html` / `blood-types.js` v6 — somente leitura; lê direto do JSON a cada carregamento (sem localStorage). Editor removido.
 - `vampire-powers.html` / `vampire-powers.js` v3 — 3 cartas de ação em `.abilities-grid`; habilidades especiais como lista simples (ícone 48×48 + nome + descrição).
 - `data/weapons.json` v9 — Espada e Machados.
 - `data/schools.json` v5 — Caos e Ilusão detalhadas; demais provisórias.
 - `data/characters.json` — personagem padrão com `hp:60`, `blood:10` (semente; dados reais no localStorage).
-- `data/blood-types.json` — 7 tipos (Criatura ativa; Mutante com `"disabled":true`); Ladino completo, Guerreiro e Estudioso parciais.
+- `data/blood-types.json` — 6 tipos ativos (Draculin desabilitado); todos os poderes vampíricos definidos com custo em sangue.
+- `data/schools.json` — véus renomeados para `veil-of-{school}`; `illusion-spear` → `wraith-spear`; `illusion-aegis` → `phantom-aegis`; `chaos-void` → `void`.
 - `data/vampire-powers.json` — `{ rowCards: [Mover, Trocar Arma, Habilidade Vampírica], abilities: [Metamorfose, Regeneração Sanguínea, Mordida] }`.
+- `assets/icons/abilities/` — pasta criada; ícones de véus e habilidades adicionados.
 
 ## 8. Convenções
 
@@ -183,12 +185,13 @@ O código usa `<img>` com fallback: se o arquivo não existir, o placeholder tra
 12. `feat:` add hex map editor with terrain types, piece placement and management
 13. `feat:` add character editor, blood type library and active character selector
 14. `feat:` add vampire powers page, hp/blood stats, fix blood types stale cache
+15. `feat:` define all blood type powers, rename school abilities, remove blood types editor
 
 ## 11. Próximos passos
 
-- Adicionar ícones `.png` reais em `assets/icons/abilities/` (metamorphosis, bloodmend, bite, move, swap-weapon, vampire-power).
+- Adicionar ícones `.png` reais restantes em `assets/icons/abilities/` (metamorphosis, bloodmend, bite, creature-frenzy, swap-weapon, vampire-power, véus das escolas).
 - Adicionar ícones em `assets/icons/blood-types/`.
-- Definir passivas/poderes dos tipos de sangue restantes (Bruto, Draculin; completar Guerreiro e Estudioso).
+- Completar passivas do Estudioso.
 - Definir as escolas de magia restantes (Blood, Frost, Unholy, Storm).
 - Interação carta↔hex no tabuleiro (mover peões com cartas).
 - Zoom no canvas do editor (scroll do mouse).

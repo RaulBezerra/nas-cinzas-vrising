@@ -6,9 +6,9 @@
 		"abilities": [
 			{
 				"slot": "veil",
-				"id": "blood-veil",
+				"id": "veil-of-blood",
 				"name": "Véu de Sangue",
-				"icon": "assets/icons/abilities/blood-veil.png",
+				"icon": "assets/icons/abilities/veil-of-blood.png",
 				"effects": [{ "kind": "text", "text": "Véu" }]
 			},
 			{
@@ -41,9 +41,9 @@
 		"abilities": [
 			{
 				"slot": "veil",
-				"id": "frost-veil",
+				"id": "veil-of-frost",
 				"name": "Véu Gelado",
-				"icon": "assets/icons/abilities/frost-veil.png",
+				"icon": "assets/icons/abilities/veil-of-frost.png",
 				"effects": [{ "kind": "text", "text": "Véu" }]
 			},
 			{
@@ -76,9 +76,9 @@
 		"abilities": [
 			{
 				"slot": "veil",
-				"id": "unholy-veil",
+				"id": "veil-of-unholy",
 				"name": "Véu Profano",
-				"icon": "assets/icons/abilities/unholy-veil.png",
+				"icon": "assets/icons/abilities/veil-of-unholy.png",
 				"effects": [{ "kind": "text", "text": "Véu" }]
 			},
 			{
@@ -111,9 +111,9 @@
 		"abilities": [
 			{
 				"slot": "veil",
-				"id": "illusion-veil",
+				"id": "veil-of-illusion",
 				"name": "Véu da Ilusão",
-				"icon": "assets/icons/abilities/illusion-veil.png",
+				"icon": "assets/icons/abilities/veil-of-illusion.png",
 				"effects": [
 					{ "kind": "move", "value": 2 },
 					{
@@ -125,9 +125,9 @@
 			},
 			{
 				"slot": "magic-1",
-				"id": "illusion-spear",
+				"id": "wraith-spear",
 				"name": "Lança Fantasma",
-				"icon": "assets/icons/abilities/illusion-spear.png",
+				"icon": "assets/icons/abilities/wraith-spear.png",
 				"effects": [
 					{ "kind": "move", "value": 1 },
 					{ "kind": "range", "value": 4 },
@@ -141,9 +141,9 @@
 			},
 			{
 				"slot": "magic-2",
-				"id": "illusion-aegis",
+				"id": "phantom-aegis",
 				"name": "Égide Fantasma",
-				"icon": "assets/icons/abilities/illusion-aegis.png",
+				"icon": "assets/icons/abilities/phantom-aegis.png",
 				"effects": [
 					{ "kind": "range", "value": 5 },
 					{
@@ -170,9 +170,9 @@
 		"abilities": [
 			{
 				"slot": "veil",
-				"id": "storm-veil",
+				"id": "veil-of-storm",
 				"name": "Véu Tempestuoso",
-				"icon": "assets/icons/abilities/storm-veil.png",
+				"icon": "assets/icons/abilities/veil-of-storm.png",
 				"effects": [{ "kind": "text", "text": "Véu" }]
 			},
 			{
@@ -205,9 +205,9 @@
 		"abilities": [
 			{
 				"slot": "veil",
-				"id": "chaos-veil",
+				"id": "veil-of-chaos",
 				"name": "Véu do Caos",
-				"icon": "assets/icons/abilities/chaos-veil.png",
+				"icon": "assets/icons/abilities/veil-of-chaos.png",
 				"effects": [
 					{ "kind": "move", "value": 1 },
 					{
@@ -220,9 +220,9 @@
 			},
 			{
 				"slot": "magic-1",
-				"id": "chaos-void",
+				"id": "void",
 				"name": "Void",
-				"icon": "assets/icons/abilities/chaos-void.png",
+				"icon": "assets/icons/abilities/void.png",
 				"effects": [
 					{ "kind": "range", "value": 3 },
 					{

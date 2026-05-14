@@ -5,13 +5,16 @@
 		"icon": "assets/icons/blood-types/rogue.png",
 		"passives": [
 			{ "description": "Primeiro ataque após usar o véu tem a rolagem máxima" },
-			{ "description": "Acertar um inimigo por trás dobra o dano" }
+			{ "description": "Acertar um inimigo por trás dobra o dano da rolagem" }
 		],
 		"vampirePower": {
 			"id": "rogue-shadow-step",
 			"name": "Passo das Sombras",
 			"icon": "assets/icons/abilities/rogue-shadow-step.png",
-			"effects": [{ "kind": "move", "value": 4 }]
+			"effects": [
+				{ "kind": "text", "text": "Custa 1 de sangue" },
+				{ "kind": "move", "value": 5 }
+			]
 		}
 	},
 	{
@@ -19,19 +22,33 @@
 		"name": "Bruto",
 		"icon": "assets/icons/blood-types/brute.png",
 		"passives": [
-			{ "description": "Ao rolar o máximo num ataque corporal, recupere de vida o valor da rolagem" }
+			{ "description": "Ao rolar o máximo num ataque corporal, recupere de vida o valor da rolagem" },
+			{ "description": "+15 de vida" }
 		],
-		"vampirePower": null
+		"vampirePower": {
+			"id": "brute-parry",
+			"name": "Bloqueio",
+			"icon": "assets/icons/abilities/parry.png",
+			"effects": [{ "kind": "text", "text": "Gasta X de sangue. Reduz todo dano recebido no próximo turno em 2X" }]
+		}
 	},
 	{
 		"id": "warrior",
 		"name": "Guerreiro",
 		"icon": "assets/icons/blood-types/warrior.png",
 		"passives": [
-			{ "description": "Trocar de arma permite realizar um ataque com a arma nova, mas com rolagem mínima" },
+			{ "description": "Trocar de arma permite realizar um ataque com a arma nova, mas com dano mínimo da rolagem" },
 			{ "description": "Pode ter +1 arma no inventário" }
 		],
-		"vampirePower": null
+		"vampirePower": {
+			"id": "warrior-counter",
+			"name": "Contra-ataque",
+			"icon": "assets/icons/abilities/block.png",
+			"effects": [
+				{ "kind": "text", "text": "Custa 1 de sangue" },
+				{ "kind": "text", "text": "Reduz o dano do próximo ataque físico recebido nesta rodada à metade e devolve a mesma quantia ao alvo" }
+			]
+		}
 	},
 	{
 		"id": "scholar",
@@ -42,27 +59,49 @@
 			"id": "scholar-echo",
 			"name": "Eco Arcano",
 			"icon": "assets/icons/abilities/scholar-echo.png",
-			"effects": [{ "kind": "text", "text": "Repete a última magia usada, exceto ultimate" }]
+			"effects": [
+				{ "kind": "text", "text": "Custa 1 de sangue" },
+				{ "kind": "text", "text": "Repete a última magia usada, exceto ultimate" }
+			]
+		}
+	},
+	{
+		"id": "creature",
+		"name": "Criatura",
+		"icon": "assets/icons/blood-types/creature.png",
+		"passives": [
+			{ "description": "Mordida tem +1 de alcance, +2 de limite de vida do alvo e gera +1 de sangue" },
+			{ "description": "+2 de sangue. Regeneração Sanguínea cura +1d6 por ponto gasto" }
+		],
+		"vampirePower": {
+			"id": "creature-frenzy",
+			"name": "Êxtase Sanguíneo",
+			"icon": "assets/icons/abilities/creature-frenzy.png",
+			"effects": [
+				{ "kind": "text", "text": "Custa 1 de sangue" },
+				{ "kind": "text", "text": "" }
+			]
+		}
+	},
+	{
+		"id": "mutant",
+		"name": "Mutante",
+		"icon": "assets/icons/blood-types/mutant.png",
+		"passives": [],
+		"vampirePower": {
+			"id": "mutant-resurgence",
+			"name": "Ressurgência",
+			"icon": "assets/icons/abilities/mutant-resurgence.png",
+			"effects": [
+				{ "kind": "text", "text": "Custa 2 de sangue" },
+				{ "kind": "text", "text": "Reabilita a ultimate para uso" }
+			]
 		}
 	},
 	{
 		"id": "draculin",
 		"name": "Draculin",
 		"icon": "assets/icons/blood-types/draculin.png",
-		"passives": [],
-		"vampirePower": null
-	},
-	{
-		"id": "creature",
-		"name": "Criatura",
-		"icon": "assets/icons/blood-types/creature.png",
-		"passives": [],
-		"vampirePower": null
-	},
-	{
-		"id": "mutant",
-		"name": "Mutante",
-		"icon": "assets/icons/blood-types/mutant.png",
 		"disabled": true,
 		"passives": [],
 		"vampirePower": null
